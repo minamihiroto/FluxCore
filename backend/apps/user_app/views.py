@@ -8,11 +8,9 @@ from rest_framework import status
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
-from django.utils import timezone
 from django.contrib.auth.tokens import default_token_generator
-
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -39,7 +37,7 @@ def register(request):
     return Response(res_data, status=status.HTTP_201_CREATED)
 
 def send_activation_email(user, token):
-    activation_url = f"{settings.FRONTEND_URL}/auth/activate/{urlsafe_base64_encode(force_bytes(user.pk))}/{token}"
+    activation_url = f"{settings.FRONTEND_URL}/login/?user_id_b64={urlsafe_base64_encode(force_bytes(user.pk))}&token={token}"
     subject = 'Activate your account'
     message = f"Hello {user.username},\n\nPlease click the link below to activate your account:\n{activation_url}"
     from_email = settings.EMAIL_HOST_USER
@@ -83,3 +81,13 @@ def login(request):
         return Response(res_data)
     else:
         return Response({'error': 'Invalid credentials'}, status=401)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user(request):
+    user = request.user
+    data = {
+        'username': user.username,
+        'email': user.email,
+    }
+    return Response(data)

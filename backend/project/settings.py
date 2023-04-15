@@ -155,4 +155,4 @@ if DEBUG:
 #     EMAIL_USE_SSL = False
 #     DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 
-FRONTEND_URL = 'http://localhost:8000' # 一旦ロジックのみ
+FRONTEND_URL = 'http://localhost:3000' # 一旦ロジックのみ
