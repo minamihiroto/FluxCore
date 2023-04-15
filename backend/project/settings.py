@@ -144,3 +144,15 @@ DATABASES = {
         'PORT': os.environ.get('DATABASE_PORT'),
     }
 }
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# else:
+#     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#     EMAIL_HOST = 'localhost'
+#     EMAIL_PORT = 25
+#     EMAIL_USE_TLS = False
+#     EMAIL_USE_SSL = False
+#     DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+
+FRONTEND_URL = 'http://localhost:8000' # 一旦ロジックのみ
