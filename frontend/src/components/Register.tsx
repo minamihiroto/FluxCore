@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from './AxiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 const Register: React.FC = () => {
@@ -13,13 +13,11 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/auth/register/', {
+      await axios.post('/auth/register/', {
         username,
         password,
         email,
       });
-      localStorage.setItem('access', response.data.access);
-      localStorage.setItem('refresh', response.data.refresh);
       navigate('/login');
     } catch (error) {
       console.error('Registration error:', error);

@@ -10,6 +10,14 @@ const Login: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const token = localStorage.getItem("access");
+    if (token) {
+      navigate("/");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const activateAccount = async () => {
       const queryParams = new URLSearchParams(location.search);
       const user_id_b64 = queryParams.get('user_id_b64');
