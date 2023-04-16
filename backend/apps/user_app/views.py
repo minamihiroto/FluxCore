@@ -4,13 +4,18 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import status
+from rest_framework import status, generics
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import get_user_model
+import base64
+
+User = get_user_model()
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -91,3 +96,47 @@ def user(request):
         'email': user.email,
     }
     return Response(data)
+
+class PasswordResetRequestView(generics.GenericAPIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if email:
+            try:
+                user = User.objects.get(email=email)
+                token = default_token_generator.make_token(user)
+                uidb64 = urlsafe_base64_encode(base64.b64encode(str(user.pk).encode()))
+
+                reset_url = f"{settings.FRONTEND_URL}/password-reset-confirm/{uidb64}/{token}/"
+
+                send_mail(
+                    "Password Reset Request",
+                    f"Click the link to reset your password: {reset_url}",
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False,
+                )
+
+                return Response({"message": "Password reset email sent."}, status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+class PasswordResetConfirmView(generics.GenericAPIView):
+    def post(self, request, uidb64, token):
+        password = request.data.get('password')
+        if password:
+            try:
+                uid = base64.b64decode(urlsafe_base64_decode(uidb64)).decode()
+                user = User.objects.get(pk=uid)
+
+                if default_token_generator.check_token(user, token):
+                    user.set_password(password)
+                    user.save()
+                    return Response({"message": "Password reset successful."}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "Password is required."}, status=status.HTTP_400_BAD_REQUEST)
