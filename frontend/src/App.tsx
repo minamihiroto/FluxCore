@@ -12,12 +12,15 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/register" element={<Register />} />
+        {/* ログイン前 */}
         <Route path="/login" element={<Login />} />
-        <Route path="/password-reset" element={<PasswordResetRequest />} />
-        <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
+        {/* ログイン後 */}
+        <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home/>} />
         <Route path="/box/:id" element={<BoxDetail/>} />
+        {/* 今の所どちらでも */}
+        <Route path="/password-reset" element={<PasswordResetRequest />} />
+        <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
       </Routes>
     </Router>
   );
