@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -48,6 +48,7 @@ const Register: React.FC = () => {
         />
         <button type="submit">登録</button>
       </form>
+      <Link to={"/"}>ホームへ</Link>
       {message && <p>{message}</p>}
     </div>
   );

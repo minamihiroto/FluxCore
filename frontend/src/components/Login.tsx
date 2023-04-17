@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation,Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -71,6 +71,7 @@ const Login: React.FC = () => {
         />
         <button type="submit">ログイン</button>
       </form>
+      <Link to={"/password-reset"}>パスワードを忘れた方へ</Link>
       {message && <p>{message}</p>}
     </div>
   );

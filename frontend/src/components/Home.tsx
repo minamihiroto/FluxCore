@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createBox, getBoxes } from '../api/boxApi';
 import axios from "axios";
 import BoxList from './BoxList';
+import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -70,6 +71,8 @@ const Dashboard: React.FC = () => {
         <button type="submit">作成</button>
       </form>
       <BoxList boxes={boxes} />
+      <Link to={"/register"}>新規ユーザー登録へ</Link>
+      <Link to={"/password-reset"}>パスワードを忘れた方へ</Link>
       <button onClick={handleLogout}>ログアウト</button>
     </div>
   );
