@@ -92,6 +92,7 @@ def login(request):
 def user(request):
     user = request.user
     data = {
+        'id': user.id,
         'username': user.username,
         'email': user.email,
     }

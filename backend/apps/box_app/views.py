@@ -14,6 +14,7 @@ graph = Graph(os.environ.get('BOLT_URL'), auth=(os.environ.get('BOLT_USER'), os.
 def create_box(request):
     data = json.loads(request.body)
     box_name = data.get("name")
-    box = Node("Box", name=box_name, created_at=datetime.now(), updated_at=datetime.now())
+    created_by = data.get("user_id")
+    box = Node("Box", name=box_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
     graph.create(box)
     return JsonResponse({"status": "success"})

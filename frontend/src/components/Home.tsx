@@ -5,14 +5,17 @@ import axios from "../AxiosConfig";
 const Dashboard: React.FC = () => {
   const [username, setUsername] = useState("");
   const [boxName, setBoxName] = useState('');
+  const [userId, setUserId] = useState<number | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await createBox(boxName);
-    if (result) {
-      alert('Box created successfully!');
-    } else {
-      alert('Error creating box');
+    if (userId) {
+      const result = await createBox(boxName, userId);
+      if (result) {
+        alert("Box created successfully!");
+      } else {
+        alert("Error creating box");
+      }
     }
   };
 
@@ -27,6 +30,7 @@ const Dashboard: React.FC = () => {
         };
         const response = await axios.get("/auth/user/", config);
         setUsername(response.data.username);
+        setUserId(response.data.id);
       } catch (error) {
         console.error("Error fetching user info:", error);
       }
