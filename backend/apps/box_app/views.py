@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 import json
-from rest_framework.response import Response
 from rest_framework import status
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
