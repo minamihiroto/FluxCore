@@ -25,3 +25,13 @@ export const getBoxes = async () => {
     return null;
   }
 };
+
+export const getBoxDetail = async (boxId: number) => {
+  try {
+    const response = await axios.get(`/box/${boxId}`);
+    return response.data.box;
+  } catch (error) {
+    console.error(`Error fetching box details: ${error}`);
+    throw error;
+  }
+};

@@ -4,9 +4,10 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
 import json
+from rest_framework.response import Response
+from rest_framework import status
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 graph = Graph(os.environ.get('BOLT_URL'), auth=(os.environ.get('BOLT_USER'), os.environ.get('BOLT_PASSWORD')))
@@ -32,3 +33,26 @@ def get_boxes(request):
         boxes.append({"id": box.identity, "name": box['name'], "created_by": box['created_by']})
 
     return JsonResponse({"boxes": boxes})
+
+def get_box_details(request, box_id):
+    query = f"""
+    MATCH (b:Box) WHERE ID(b) = {box_id}
+    RETURN b, ID(b) as box_id;
+    """
+    result = graph.run(query).data()
+
+    if not result:
+        return JsonResponse({"error": "Box not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    box = result[0]['b']
+    box_id = result[0]['box_id']
+
+    serialized_box = {
+        "id": box_id,
+        "name": box["name"],
+        "created_by": box["created_by"],
+        "created_at": box["created_at"].isoformat(),
+        "updated_at": box["updated_at"].isoformat(),
+    }
+
+    return JsonResponse({"box": serialized_box})

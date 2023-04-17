@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Box {
   id: number;
@@ -17,7 +18,7 @@ const BoxList: React.FC<BoxListProps> = ({ boxes }) => {
       <ul>
         {boxes.map((box) => (
           <li key={box.id}>
-            <p>ボックス名:{box.name}</p>
+            <Link to={`/box/${box.id}`}>{box.name}</Link>
             <p>作成者:{box.created_by}</p>
           </li>
         ))}
