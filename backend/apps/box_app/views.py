@@ -22,10 +22,8 @@ def create_box(request):
 
 # Box一覧を取得するエンドポイント
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_boxes(request):
-    user_id = request.user.id
-    query = f"MATCH (b:Box) WHERE b.created_by = {user_id} RETURN b"
+    query = f"MATCH (b:Box) RETURN b"
     result = graph.run(query)
     boxes = []
 
