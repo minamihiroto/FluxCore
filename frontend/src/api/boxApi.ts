@@ -15,3 +15,19 @@ export const createBox = async (boxName: string, userId: number) => {
     return null;
   }
 };
+
+export const getBoxes = async () => {
+  try {
+    const token = localStorage.getItem("access");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.get("/box/list/", config);
+    return response.data.boxes;
+  } catch (error) {
+    console.error("Error fetching boxes:", error);
+    return null;
+  }
+};

@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { createBox } from '../api/boxApi';
+import { createBox, getBoxes } from '../api/boxApi';
 import axios from "../AxiosConfig";
+import BoxList from './BoxList';
 
 const Dashboard: React.FC = () => {
   const [username, setUsername] = useState("");
   const [boxName, setBoxName] = useState('');
-  const [userId, setUserId] = useState<number | null>(null);
+  const [boxes, setBoxes] = useState([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (userId) {
-      const result = await createBox(boxName, userId);
-      if (result) {
-        alert("Box created successfully!");
-      } else {
-        alert("Error creating box");
-      }
+    const userId = parseInt(localStorage.getItem("user_id") || "0", 10);
+    const result = await createBox(boxName, userId);
+    if (result) {
+      alert('Box created successfully!');
+      loadBoxes();
+    } else {
+      alert('Error creating box');
     }
+  };
+
+  const loadBoxes = async () => {
+    const boxes = await getBoxes();
+    setBoxes(boxes);
   };
 
   useEffect(() => {
@@ -30,18 +36,20 @@ const Dashboard: React.FC = () => {
         };
         const response = await axios.get("/auth/user/", config);
         setUsername(response.data.username);
-        setUserId(response.data.id);
+        localStorage.setItem("user_id", response.data.id);
       } catch (error) {
         console.error("Error fetching user info:", error);
       }
     };
 
     getUserInfo();
+    loadBoxes();
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
+    localStorage.removeItem("user_id");
     window.location.href = "/login";
   };
 
@@ -60,6 +68,7 @@ const Dashboard: React.FC = () => {
         />
         <button type="submit">Create Box</button>
       </form>
+      <BoxList boxes={boxes} />
       <button onClick={handleLogout}>ログアウト</button>
     </div>
   );
