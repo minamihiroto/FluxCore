@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
-import axios from './AxiosConfig';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "../AxiosConfig";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/auth/register/', {
+      await axios.post("/auth/register/", {
         username,
         password,
         email,
       });
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.error('Registration error:', error);
-      setMessage('登録に失敗しました。');
+      console.error("Registration error:", error);
+      setMessage("登録に失敗しました。");
     }
   };
 
