@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createBox, getBoxes } from '../api/boxApi';
-import axios from "../AxiosConfig";
+import axios from "axios";
 import BoxList from './BoxList';
 
 const Dashboard: React.FC = () => {

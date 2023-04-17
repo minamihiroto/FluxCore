@@ -1,4 +1,4 @@
-import axios from '../AxiosConfig';
+import axios from 'axios';
 
 export const createBox = async (boxName: string, userId: number) => {
   try {
