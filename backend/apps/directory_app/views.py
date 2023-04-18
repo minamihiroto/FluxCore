@@ -32,3 +32,15 @@ def create_directory(request):
     graph.create(child_rel)
 
     return JsonResponse({"status": "success"})
+
+@api_view(['GET'])
+def get_directories(request, box_id):
+    query = f"MATCH (b:Box)-[r:child]->(d:Directory) WHERE ID(b) = {box_id} RETURN d"
+    result = graph.run(query)
+    directories = []
+
+    for record in result:
+        directory = record['d']
+        directories.append({"id": directory.identity, "name": directory['name'], "created_by": directory['created_by']})
+
+    return JsonResponse({"directories": directories})

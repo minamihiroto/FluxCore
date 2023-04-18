@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { createDirectory } from '../api/direcoryApi';
+import { createDirectory,getDirectories } from '../api/direcoryApi';
 import { useParams } from "react-router-dom";
 import { getBoxDetail } from "../api/boxApi";
+import DirectoryList from './DirectoryList';
+
 
 const BoxDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [box, setBox] = useState<any>(null);
   const [directoryName, setDirectoryName] = useState('');
+  const [directories, setDirectories] = useState([]);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,10 +18,21 @@ const BoxDetails: React.FC = () => {
     if (id) {
       const result = await createDirectory(directoryName, userId, parseInt(id, 10));
       if (result) {
+        loadDirectories();
         return;
       } else {
         alert('Error creating directory');
       }
+    } else {
+      console.error('Error: box id is not defined.');
+    }
+  };
+
+  const loadDirectories = async () => {
+    if (id) {
+      const boxId = parseInt(id, 10);
+      const directories = await getDirectories(boxId);
+      setDirectories(directories);
     } else {
       console.error('Error: box id is not defined.');
     }
@@ -28,14 +43,16 @@ const BoxDetails: React.FC = () => {
       console.error('Error: box id is not defined.');
       return;
     }
-
+  
     const fetchBoxDetails = async () => {
       const boxId = parseInt(id, 10);
       const boxDetails = await getBoxDetail(boxId);
       setBox(boxDetails);
     };
-
+  
     fetchBoxDetails();
+    loadDirectories();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (!box) {
@@ -59,6 +76,7 @@ const BoxDetails: React.FC = () => {
         />
         <button type="submit">作成</button>
       </form>
+      <DirectoryList directories={directories} />
     </div>
   );
 };

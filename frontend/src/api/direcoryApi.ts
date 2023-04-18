@@ -15,3 +15,13 @@ export const createDirectory = async (directoryName: string, userId: number, box
     return null;
   }
 };
+
+export const getDirectories = async (boxId: number) => {
+  try {
+    const response = await axios.get(`/directory/list/${boxId}`);
+    return response.data.directories;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
