@@ -15,3 +15,13 @@ export const createDocument = async (documentName: string, userId: number, boxId
     return null;
   }
 };
+
+export const getDocuments = async (boxId: number) => {
+  try {
+    const response = await axios.get(`/document/list/${boxId}`);
+    return response.data.documents;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};

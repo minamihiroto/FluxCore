@@ -32,3 +32,15 @@ def create_document(request):
     graph.create(child_rel)
 
     return JsonResponse({"status": "success"})
+
+@api_view(['GET'])
+def get_documents(request, box_id):
+    query = f"MATCH (b:Box)-[r:child]->(d:Document) WHERE ID(b) = {box_id} RETURN d"
+    result = graph.run(query)
+    documents = []
+
+    for record in result:
+        document = record['d']
+        documents.append({"id": document.identity, "name": document['name'], "created_by": document['created_by']})
+
+    return JsonResponse({"documents": documents})

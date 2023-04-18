@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { createDirectory,getDirectories } from '../api/direcoryApi';
-import { createDocument } from '../api/documentApi';
+import { createDocument, getDocuments } from '../api/documentApi';
 import { useParams } from "react-router-dom";
 import { getBoxDetail } from "../api/boxApi";
 import DirectoryList from './DirectoryList';
+import DocumentList from './DocumentList';
 
 
 const BoxDetails: React.FC = () => {
@@ -12,6 +13,7 @@ const BoxDetails: React.FC = () => {
   const [directoryName, setDirectoryName] = useState('');
   const [documentName, setDocumentName] = useState('');
   const [directories, setDirectories] = useState([]);
+  const [documents, setDocuments] = useState([]);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +38,7 @@ const BoxDetails: React.FC = () => {
     if (id) {
       const result = await createDocument(documentName, userId, parseInt(id, 10));
       if (result) {
-        loadDirectories();
+        loadDocuments();
         return;
       } else {
         alert('Error creating document');
@@ -56,6 +58,16 @@ const BoxDetails: React.FC = () => {
     }
   };
 
+  const loadDocuments = async () => {
+    if (id) {
+      const boxId = parseInt(id, 10);
+      const documents = await getDocuments(boxId);
+      setDocuments(documents);
+    } else {
+      console.error('Error: box id is not defined.');
+    }
+  };
+
   useEffect(() => {
     if (!id) {
       console.error('Error: box id is not defined.');
@@ -70,6 +82,7 @@ const BoxDetails: React.FC = () => {
   
     fetchBoxDetails();
     loadDirectories();
+    loadDocuments();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -105,6 +118,7 @@ const BoxDetails: React.FC = () => {
         <button type="submit">作成</button>
       </form>
       <DirectoryList directories={directories} />
+      <DocumentList documents={documents} />
     </div>
   );
 };
