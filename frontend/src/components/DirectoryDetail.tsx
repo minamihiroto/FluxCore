@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getDirectoryDetail } from "../api/directoryApi";
 import DirectoryList from './DirectoryList';
 import DocumentList from './DocumentList';
+import Breadcrumbs from './Breadcrumbs';
 
 
 const DirectoryDetails: React.FC = () => {
@@ -79,7 +80,7 @@ const DirectoryDetails: React.FC = () => {
       const directoryDetails = await getDirectoryDetail(directoryId);
       setDirectory(directoryDetails);
     };
-  
+
     fetchDirectoryDetails();
     loadDirectories();
     loadDocuments();
@@ -92,6 +93,7 @@ const DirectoryDetails: React.FC = () => {
 
   return (
     <div>
+      <Breadcrumbs directoryId={directory.id} />
       <h2>ディレクトリ詳細</h2>
       <p>ディレクトリ名: {directory.name}</p>
       <p>作成者ID: {directory.created_by}</p>

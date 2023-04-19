@@ -6,7 +6,6 @@ import { getBoxDetail } from "../api/boxApi";
 import DirectoryList from './DirectoryList';
 import DocumentList from './DocumentList';
 
-
 const BoxDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [box, setBox] = useState<any>(null);
