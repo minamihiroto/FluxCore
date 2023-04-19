@@ -13,7 +13,7 @@ interface DocumentListProps {
 const DocumentList: React.FC<DocumentListProps> = ({ documents }) => {
   return (
     <div>
-      <h2>ディレクトリ一覧</h2>
+      <h2>ドキュメント一覧</h2>
       <ul>
         {documents.map((document) => (
           <li key={document.id}>

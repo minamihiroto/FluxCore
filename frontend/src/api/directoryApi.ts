@@ -25,3 +25,13 @@ export const getDirectories = async (boxId: number) => {
     return [];
   }
 };
+
+export const getDirectoryDetail = async (directoryId: number) => {
+  try {
+    const response = await axios.get(`/directory/${directoryId}`);
+    return response.data.directory;
+  } catch (error) {
+    console.error(`Error fetching directory details: ${error}`);
+    throw error;
+  }
+};

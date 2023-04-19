@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Directory {
   id: number;
@@ -17,7 +18,7 @@ const DirectoryList: React.FC<DirectoryListProps> = ({ directories }) => {
       <ul>
         {directories.map((directory) => (
           <li key={directory.id}>
-            <p>{directory.name}</p>
+            <Link to={`/directory/${directory.id}`}>{directory.name}</Link>
             <p>作成者:{directory.created_by}</p>
           </li>
         ))}

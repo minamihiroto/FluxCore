@@ -44,3 +44,26 @@ def get_directories(request, box_id):
         directories.append({"id": directory.identity, "name": directory['name'], "created_by": directory['created_by']})
 
     return JsonResponse({"directories": directories})
+
+def get_directory_details(request, directory_id):
+    query = f"""
+    MATCH (b:Directory) WHERE ID(b) = {directory_id}
+    RETURN b, ID(b) as directory_id;
+    """
+    result = graph.run(query).data()
+
+    if not result:
+        return JsonResponse({"error": "directory not found"})
+
+    directory = result[0]['b']
+    directory_id = result[0]['directory_id']
+
+    serialized_directory = {
+        "id": directory_id,
+        "name": directory["name"],
+        "created_by": directory["created_by"],
+        "created_at": directory["created_at"].isoformat(),
+        "updated_at": directory["updated_at"].isoformat(),
+    }
+
+    return JsonResponse({"directory": serialized_directory})

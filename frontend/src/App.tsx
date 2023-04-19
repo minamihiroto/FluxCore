@@ -13,6 +13,7 @@ import PasswordResetRequest from "./components/PasswordResetRequest";
 import PasswordResetConfirm from "./components/PasswordResetConfirm";
 import BoxDetail from "./components/BoxDetail";
 import axios from "axios";
+import DirectoryDetail from "./components/DirectoryDetail";
 
 const AuthWrapper: React.FC = () => {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ const AuthWrapper: React.FC = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Home />} />
       <Route path="/box/:id" element={<BoxDetail />} />
+      <Route path="/directory/:id" element={<DirectoryDetail/>}/>
       {/* どちらでもアクセス可能 */}
       <Route path="/password-reset" element={<PasswordResetRequest />} />
       <Route

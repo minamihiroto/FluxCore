@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { createDirectory,getDirectories } from '../api/directoryApi';
 import { createDocument, getDocuments } from '../api/documentApi';
 import { useParams } from "react-router-dom";
-import { getBoxDetail } from "../api/boxApi";
+import { getDirectoryDetail } from "../api/directoryApi";
 import DirectoryList from './DirectoryList';
 import DocumentList from './DocumentList';
 
 
-const BoxDetails: React.FC = () => {
+const DirectoryDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [box, setBox] = useState<any>(null);
+  const [directory, setDirectory] = useState<any>(null);
   const [directoryName, setDirectoryName] = useState('');
   const [documentName, setDocumentName] = useState('');
   const [directories, setDirectories] = useState([]);
@@ -28,7 +28,7 @@ const BoxDetails: React.FC = () => {
         alert('Error creating directory');
       }
     } else {
-      console.error('Error: box id is not defined.');
+      console.error('Error: directory id is not defined.');
     }
   };
 
@@ -44,59 +44,59 @@ const BoxDetails: React.FC = () => {
         alert('Error creating document');
       }
     } else {
-      console.error('Error: box id is not defined.');
+      console.error('Error: directory id is not defined.');
     }
   };
 
   const loadDirectories = async () => {
     if (id) {
-      const boxId = parseInt(id, 10);
-      const directories = await getDirectories(boxId);
+      const directoryId = parseInt(id, 10);
+      const directories = await getDirectories(directoryId);
       setDirectories(directories);
     } else {
-      console.error('Error: box id is not defined.');
+      console.error('Error: directory id is not defined.');
     }
   };
 
   const loadDocuments = async () => {
     if (id) {
-      const boxId = parseInt(id, 10);
-      const documents = await getDocuments(boxId);
+      const directoryId = parseInt(id, 10);
+      const documents = await getDocuments(directoryId);
       setDocuments(documents);
     } else {
-      console.error('Error: box id is not defined.');
+      console.error('Error: directory id is not defined.');
     }
   };
 
   useEffect(() => {
     if (!id) {
-      console.error('Error: box id is not defined.');
+      console.error('Error: directory id is not defined.');
       return;
     }
   
-    const fetchBoxDetails = async () => {
-      const boxId = parseInt(id, 10);
-      const boxDetails = await getBoxDetail(boxId);
-      setBox(boxDetails);
+    const fetchDirectoryDetails = async () => {
+      const directoryId = parseInt(id, 10);
+      const directoryDetails = await getDirectoryDetail(directoryId);
+      setDirectory(directoryDetails);
     };
   
-    fetchBoxDetails();
+    fetchDirectoryDetails();
     loadDirectories();
     loadDocuments();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (!box) {
+  if (!directory) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <h2>ボックス詳細</h2>
-      <p>ボックス名: {box.name}</p>
-      <p>作成者ID: {box.created_by}</p>
-      <p>作成日時: {box.created_at}</p>
-      <p>更新日時: {box.updated_at}</p>
+      <h2>ディレクトリ詳細</h2>
+      <p>ディレクトリ名: {directory.name}</p>
+      <p>作成者ID: {directory.created_by}</p>
+      <p>作成日時: {directory.created_at}</p>
+      <p>更新日時: {directory.updated_at}</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="directoryName">ディレクトリ作成</label>
         <input
@@ -123,4 +123,4 @@ const BoxDetails: React.FC = () => {
   );
 };
 
-export default BoxDetails;
+export default DirectoryDetails;
