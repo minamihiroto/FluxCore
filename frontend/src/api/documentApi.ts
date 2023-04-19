@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const createDocument = async (documentName: string, userId: number, boxId: number) => {
+export const createBoxLinkedDocument = async (documentName: string, userId: number, boxId: number) => {
   try {
     const token = localStorage.getItem("access");
     const config = {
@@ -16,9 +16,35 @@ export const createDocument = async (documentName: string, userId: number, boxId
   }
 };
 
-export const getDocuments = async (boxId: number) => {
+export const createDirectoryLinkedDocument = async (documentName: string, userId: number, directoryId: number) => {
   try {
-    const response = await axios.get(`/document/list/${boxId}`);
+    const token = localStorage.getItem("access");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.post('/document/create/', { name: documentName, user_id: userId, directory_id: directoryId }, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating document:", error);
+    return null;
+  }
+};
+
+export const getBoxLinkedDocuments = async (boxId: number) => {
+  try {
+    const response = await axios.get(`/document/boxlist/${boxId}`);
+    return response.data.documents;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const getDirectoryLinkedDocuments = async (directroyId: number) => {
+  try {
+    const response = await axios.get(`/document/directorylist/${directroyId}`);
     return response.data.documents;
   } catch (error) {
     console.error(error);

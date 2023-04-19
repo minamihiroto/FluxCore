@@ -16,26 +16,54 @@ def create_document(request):
     data = json.loads(request.body)
     document_name = data.get("name")
     created_by = data.get("user_id")
-    box_id = data.get("box_id")
+    if data.get("box_id"):
+        box_id = data.get("box_id")
 
-    query = f"MATCH (b:Box) WHERE ID(b) = {box_id} RETURN b"
-    box_data = graph.run(query).data()
-    if not box_data:
-        return JsonResponse({"error": "Box not found"})
-    
-    box_node = box_data[0]['b']
+        query = f"MATCH (b:Box) WHERE ID(b) = {box_id} RETURN b"
+        box_data = graph.run(query).data()
+        if not box_data:
+            return JsonResponse({"error": "Box not found"})
+        
+        box_node = box_data[0]['b']
 
-    document = Node("Document", name=document_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
-    graph.create(document)
+        document = Node("Document", name=document_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
+        graph.create(document)
 
-    child_rel = Relationship(box_node, "child", document)
-    graph.create(child_rel)
+        child_rel = Relationship(box_node, "child", document)
+        graph.create(child_rel)
+        return JsonResponse({"status": "success"})
+    elif data.get("directory_id"):
+        directory_id = data.get("directory_id")
 
-    return JsonResponse({"status": "success"})
+        query = f"MATCH (b:Directory) WHERE ID(b) = {directory_id} RETURN b"
+        directory_data = graph.run(query).data()
+        if not directory_data:
+            return JsonResponse({"error": "Directory not found"})
+        
+        directory_node = directory_data[0]['b']
+
+        document = Node("Document", name=document_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
+        graph.create(document)
+
+        child_rel = Relationship(directory_node, "child", document)
+        graph.create(child_rel)
+        return JsonResponse({"status": "success"})
 
 @api_view(['GET'])
-def get_documents(request, box_id):
+def get_box_documents(request, box_id):
     query = f"MATCH (b:Box)-[r:child]->(d:Document) WHERE ID(b) = {box_id} RETURN d"
+    result = graph.run(query)
+    documents = []
+
+    for record in result:
+        document = record['d']
+        documents.append({"id": document.identity, "name": document['name'], "created_by": document['created_by']})
+
+    return JsonResponse({"documents": documents})
+
+@api_view(['GET'])
+def get_directory_documents(request, directory_id):
+    query = f"MATCH (b:Directory)-[r:child]->(d:Document) WHERE ID(b) = {directory_id} RETURN d"
     result = graph.run(query)
     documents = []
 

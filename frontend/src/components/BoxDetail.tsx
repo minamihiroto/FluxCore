@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createBoxLinkedDirectory,getBoxLinkedDirectories } from '../api/directoryApi';
-import { createDocument, getDocuments } from '../api/documentApi';
+import { createBoxLinkedDocument, getBoxLinkedDocuments } from '../api/documentApi';
 import { useParams } from "react-router-dom";
 import { getBoxDetail } from "../api/boxApi";
 import DirectoryList from './DirectoryList';
@@ -36,7 +36,7 @@ const BoxDetails: React.FC = () => {
     e.preventDefault();
     const userId = parseInt(localStorage.getItem("user_id") || "0", 10);
     if (id) {
-      const result = await createDocument(documentName, userId, parseInt(id, 10));
+      const result = await createBoxLinkedDocument(documentName, userId, parseInt(id, 10));
       if (result) {
         loadDocuments();
         return;
@@ -61,7 +61,7 @@ const BoxDetails: React.FC = () => {
   const loadDocuments = async () => {
     if (id) {
       const boxId = parseInt(id, 10);
-      const documents = await getDocuments(boxId);
+      const documents = await getBoxLinkedDocuments(boxId);
       setDocuments(documents);
     } else {
       console.error('Error: box id is not defined.');
