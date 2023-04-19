@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../components/axiosConfig';
 import { useNavigate, useParams } from "react-router-dom";
 
 const PasswordResetConfirm: React.FC = () => {

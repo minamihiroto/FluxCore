@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createBox, getBoxes } from '../api/boxApi';
-import axios from "axios";
+import axios from "../components/axiosConfig";
 import BoxList from './BoxList';
 import { Link } from 'react-router-dom';
 

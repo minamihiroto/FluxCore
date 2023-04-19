@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../components/axiosConfig';
 import { useNavigate, useLocation,Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
