@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createDirectory,getDirectories } from '../api/directoryApi';
+import { createDirectoryLinkedDirectory,getDirectoryLinkedDirectories } from '../api/directoryApi';
 import { createDocument, getDocuments } from '../api/documentApi';
 import { useParams } from "react-router-dom";
 import { getDirectoryDetail } from "../api/directoryApi";
@@ -20,7 +20,7 @@ const DirectoryDetails: React.FC = () => {
     e.preventDefault();
     const userId = parseInt(localStorage.getItem("user_id") || "0", 10);
     if (id) {
-      const result = await createDirectory(directoryName, userId, parseInt(id, 10));
+      const result = await createDirectoryLinkedDirectory(directoryName, userId, parseInt(id, 10));
       if (result) {
         loadDirectories();
         return;
@@ -51,7 +51,7 @@ const DirectoryDetails: React.FC = () => {
   const loadDirectories = async () => {
     if (id) {
       const directoryId = parseInt(id, 10);
-      const directories = await getDirectories(directoryId);
+      const directories = await getDirectoryLinkedDirectories(directoryId);
       setDirectories(directories);
     } else {
       console.error('Error: directory id is not defined.');
