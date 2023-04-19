@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../components/axiosConfig';
+import axios from 'axios';
 
 const PasswordResetRequest: React.FC = () => {
   const [email, setEmail] = useState<string>('');
