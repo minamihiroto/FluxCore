@@ -92,6 +92,43 @@ def get_document_details(request, document_id):
         "created_by": document["created_by"],
         "created_at": document["created_at"].isoformat(),
         "updated_at": document["updated_at"].isoformat(),
+        "note": document["note"] if "note" in document else None
     }
 
     return JsonResponse({"document": serialized_document})
+
+@api_view(['PUT'])
+@csrf_exempt
+def update_document(request, document_id):
+    data = json.loads(request.body)
+    note = data.get("note")
+    name = data.get("name")
+
+    query = f"MATCH (d:Document) WHERE ID(d) = {document_id} RETURN d"
+    document_data = graph.run(query).data()
+
+    if not document_data:
+        return JsonResponse({"error": "Document not found"})
+
+    document_node = document_data[0]['d']
+
+    if note is not None:
+        document_node["note"] = note
+
+    if name is not None:
+        document_node["name"] = name
+
+    document_node["updated_at"] = datetime.now()
+    graph.push(document_node)
+
+    serialized_document = {
+        "id": document_id,
+        "name": document_node["name"],
+        "created_by": document_node["created_by"],
+        "created_at": document_node["created_at"].isoformat(),
+        "updated_at": document_node["updated_at"].isoformat(),
+        "note": document_node.get("note", ""),
+    }
+
+    return JsonResponse({"document": serialized_document})
+

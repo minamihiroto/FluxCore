@@ -61,3 +61,19 @@ export const getDocumentDetail = async (documentId: number) => {
     throw error;
   }
 };
+
+export const updateNoteInDocument = async (documentId: number, newNote: string) => {
+  try {
+    const token = localStorage.getItem("access");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.put(`/document/update/${documentId}/`, { note: newNote }, config);
+    return response.data.document;
+  } catch (error) {
+    console.error(`Error updating note in document: ${error}`);
+    throw error;
+  }
+};
