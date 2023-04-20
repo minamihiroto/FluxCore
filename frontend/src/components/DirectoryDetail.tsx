@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createDirectoryLinkedDirectory,getDirectoryLinkedDirectories } from '../api/directoryApi';
+import { createDirectoryLinkedDirectory,getDirectoryLinkedDirectories,updateNameInDirectory } from '../api/directoryApi';
 import { createDirectoryLinkedDocument, getDirectoryLinkedDocuments } from '../api/documentApi';
 import { useParams } from "react-router-dom";
 import { getDirectoryDetail } from "../api/directoryApi";
@@ -15,7 +15,8 @@ const DirectoryDetails: React.FC = () => {
   const [documentName, setDocumentName] = useState('');
   const [directories, setDirectories] = useState([]);
   const [documents, setDocuments] = useState([]);
-
+  const [newName, setNewName] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,23 +72,39 @@ const DirectoryDetails: React.FC = () => {
     }
   };
 
-  useEffect(() => {
+  const fetchDirectoryDetails = async () => {
     if (!id) {
       console.error('Error: directory id is not defined.');
       return;
     }
-  
-    const fetchDirectoryDetails = async () => {
-      const directoryId = parseInt(id, 10);
-      const directoryDetails = await getDirectoryDetail(directoryId);
-      setDirectory(directoryDetails);
-    };
 
+    const directoryId = parseInt(id, 10);
+    const directoryDetails = await getDirectoryDetail(directoryId);
+    setDirectory(directoryDetails);
+  };
+
+  useEffect(() => {
     fetchDirectoryDetails();
     loadDirectories();
     loadDocuments();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const handleNameChange = async () => {
+    if (id) {
+      const directoryId = parseInt(id, 10);
+      const updatedDirectory = await updateNameInDirectory(directoryId, newName);
+      if (updatedDirectory) {
+        setDirectory(updatedDirectory);
+        fetchDirectoryDetails();
+        setIsEditing(false);
+      } else {
+        alert("Error updating box name");
+      }
+    } else {
+      console.error("Error: box id is not defined.");
+    }
+  };
 
   if (!directory) {
     return <div>Loading...</div>;
@@ -97,7 +114,29 @@ const DirectoryDetails: React.FC = () => {
     <div>
       <Breadcrumbs directoryId={directory.id} />
       <h2>ディレクトリ詳細</h2>
-      <p>ディレクトリ名: {directory.name}</p>
+      {isEditing ? (
+        <div>
+          <input
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+          />
+          <button onClick={handleNameChange}>更新</button>
+          <button onClick={() => setIsEditing(false)}>キャンセル</button>
+        </div>
+      ) : (
+        <p>
+          ディレクトリ名: {directory.name}{" "}
+          <button
+            onClick={() => {
+              setIsEditing(true);
+              setNewName(directory.name);
+            }}
+          >
+            編集
+          </button>
+        </p>
+      )}
       <p>作成者ID: {directory.created_by}</p>
       <p>作成日時: {directory.created_at}</p>
       <p>更新日時: {directory.updated_at}</p>

@@ -88,3 +88,38 @@ def get_directory_details(request, directory_id):
     }
 
     return JsonResponse({"directory": serialized_directory})
+
+@api_view(['PATCH'])
+@csrf_exempt
+def update_directory(request, directory_id):
+    data = json.loads(request.body)
+    note = data.get("note")
+    name = data.get("name")
+
+    query = f"MATCH (d:Directory) WHERE ID(d) = {directory_id} RETURN d"
+    directory_data = graph.run(query).data()
+
+    if not directory_data:
+        return JsonResponse({"error": "Directory not found"})
+
+    directory_node = directory_data[0]['d']
+
+    if note is not None:
+        directory_node["note"] = note
+
+    if name is not None:
+        directory_node["name"] = name
+
+    directory_node["updated_at"] = datetime.now()
+    graph.push(directory_node)
+
+    serialized_directory = {
+        "id": directory_id,
+        "name": directory_node["name"],
+        "created_by": directory_node["created_by"],
+        "created_at": directory_node["created_at"].isoformat(),
+        "updated_at": directory_node["updated_at"].isoformat(),
+        "note": directory_node.get("note", ""),
+    }
+
+    return JsonResponse({"directory": serialized_directory})

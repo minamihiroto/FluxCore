@@ -61,3 +61,19 @@ export const getDirectoryLinkedDirectories = async (directoryId: number) => {
     return [];
   }
 };
+
+export const updateNameInDirectory = async (directoryId: number, newName: string) => {
+  try {
+    const token = localStorage.getItem("access");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.patch(`/directory/update/${directoryId}/`, { name: newName }, config);
+    return response.data.directory;
+  } catch (error) {
+    console.error(`Error updating note in directory: ${error}`);
+    throw error;
+  }
+};

@@ -8,7 +8,9 @@ from rest_framework.decorators import api_view
 import json
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
-graph = Graph(os.environ.get('BOLT_URL'), auth=(os.environ.get('BOLT_USER'), os.environ.get('BOLT_PASSWORD')))
+graph = Graph(os.environ.get('BOLT_URL'), auth=(
+    os.environ.get('BOLT_USER'), os.environ.get('BOLT_PASSWORD')))
+
 
 @api_view(['POST'])
 @csrf_exempt
@@ -23,10 +25,11 @@ def create_document(request):
         box_data = graph.run(query).data()
         if not box_data:
             return JsonResponse({"error": "Box not found"})
-        
+
         box_node = box_data[0]['b']
 
-        document = Node("Document", name=document_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
+        document = Node("Document", name=document_name, created_by=created_by,
+                        created_at=datetime.now(), updated_at=datetime.now())
         graph.create(document)
 
         child_rel = Relationship(box_node, "child", document)
@@ -39,15 +42,17 @@ def create_document(request):
         directory_data = graph.run(query).data()
         if not directory_data:
             return JsonResponse({"error": "Directory not found"})
-        
+
         directory_node = directory_data[0]['b']
 
-        document = Node("Document", name=document_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
+        document = Node("Document", name=document_name, created_by=created_by,
+                        created_at=datetime.now(), updated_at=datetime.now())
         graph.create(document)
 
         child_rel = Relationship(directory_node, "child", document)
         graph.create(child_rel)
         return JsonResponse({"status": "success"})
+
 
 @api_view(['GET'])
 def get_box_documents(request, box_id):
@@ -57,9 +62,11 @@ def get_box_documents(request, box_id):
 
     for record in result:
         document = record['d']
-        documents.append({"id": document.identity, "name": document['name'], "created_by": document['created_by']})
+        documents.append(
+            {"id": document.identity, "name": document['name'], "created_by": document['created_by']})
 
     return JsonResponse({"documents": documents})
+
 
 @api_view(['GET'])
 def get_directory_documents(request, directory_id):
@@ -69,9 +76,11 @@ def get_directory_documents(request, directory_id):
 
     for record in result:
         document = record['d']
-        documents.append({"id": document.identity, "name": document['name'], "created_by": document['created_by']})
+        documents.append(
+            {"id": document.identity, "name": document['name'], "created_by": document['created_by']})
 
     return JsonResponse({"documents": documents})
+
 
 def get_document_details(request, document_id):
     query = f"""
@@ -97,7 +106,7 @@ def get_document_details(request, document_id):
 
     return JsonResponse({"document": serialized_document})
 
-@api_view(['PUT'])
+@api_view(['PATCH'])
 @csrf_exempt
 def update_document(request, document_id):
     data = json.loads(request.body)
@@ -131,4 +140,3 @@ def update_document(request, document_id):
     }
 
     return JsonResponse({"document": serialized_document})
-

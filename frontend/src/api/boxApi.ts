@@ -35,3 +35,19 @@ export const getBoxDetail = async (boxId: number) => {
     throw error;
   }
 };
+
+export const updateBoxName = async (boxId: number, newName: string) => {
+  try {
+    const token = localStorage.getItem("access");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.patch(`/box/update/${boxId}/`, { name: newName }, config);
+    return response.data.box;
+  } catch (error) {
+    console.error("Error updating box name:", error);
+    return null;
+  }
+};

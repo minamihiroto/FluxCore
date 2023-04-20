@@ -70,7 +70,23 @@ export const updateNoteInDocument = async (documentId: number, newNote: string) 
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = await axios.put(`/document/update/${documentId}/`, { note: newNote }, config);
+    const response = await axios.patch(`/document/update/${documentId}/`, { note: newNote }, config);
+    return response.data.document;
+  } catch (error) {
+    console.error(`Error updating note in document: ${error}`);
+    throw error;
+  }
+};
+
+export const updateNameInDocument = async (documentId: number, newName: string) => {
+  try {
+    const token = localStorage.getItem("access");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.patch(`/document/update/${documentId}/`, { name: newName }, config);
     return response.data.document;
   } catch (error) {
     console.error(`Error updating note in document: ${error}`);
