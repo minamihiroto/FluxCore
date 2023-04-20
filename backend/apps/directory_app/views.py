@@ -13,15 +13,12 @@ graph = Graph(os.environ.get('BOLT_URL'), auth=(os.environ.get('BOLT_USER'), os.
 @api_view(['POST'])
 @csrf_exempt
 def create_directory(request):
-    print(request.body)
     data = json.loads(request.body)
-    print(data)
     directory_name = data.get("name")
     created_by = data.get("user_id")
 
     if data.get("box_id") or data.get("box_id") == 0:
         box_id = data.get("box_id")
-        print(box_id)
         query = f"MATCH (b:Box) WHERE ID(b) = {box_id} RETURN b"
         box_data = graph.run(query).data()
         if not box_data:

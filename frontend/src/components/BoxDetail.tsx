@@ -22,6 +22,7 @@ const BoxDetails: React.FC = () => {
       const result = await createBoxLinkedDirectory(directoryName, userId, parseInt(id, 10));
       if (result) {
         loadDirectories();
+        setDirectoryName('');
         return;
       } else {
         alert('Error creating directory');
@@ -38,6 +39,7 @@ const BoxDetails: React.FC = () => {
       const result = await createBoxLinkedDocument(documentName, userId, parseInt(id, 10));
       if (result) {
         loadDocuments();
+        setDocumentName('');
         return;
       } else {
         alert('Error creating document');

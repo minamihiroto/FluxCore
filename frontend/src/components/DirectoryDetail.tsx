@@ -24,6 +24,7 @@ const DirectoryDetails: React.FC = () => {
       const result = await createDirectoryLinkedDirectory(directoryName, userId, parseInt(id, 10));
       if (result) {
         loadDirectories();
+        setDirectoryName('');
         return;
       } else {
         alert('Error creating directory');
@@ -40,6 +41,7 @@ const DirectoryDetails: React.FC = () => {
       const result = await createDirectoryLinkedDocument(documentName, userId, parseInt(id, 10));
       if (result) {
         loadDocuments();
+        setDocumentName('');
         return;
       } else {
         alert('Error creating document');
