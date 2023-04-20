@@ -72,3 +72,26 @@ def get_directory_documents(request, directory_id):
         documents.append({"id": document.identity, "name": document['name'], "created_by": document['created_by']})
 
     return JsonResponse({"documents": documents})
+
+def get_document_details(request, document_id):
+    query = f"""
+    MATCH (b:Document) WHERE ID(b) = {document_id}
+    RETURN b, ID(b) as document_id;
+    """
+    result = graph.run(query).data()
+
+    if not result:
+        return JsonResponse({"error": "document not found"})
+
+    document = result[0]['b']
+    document_id = result[0]['document_id']
+
+    serialized_document = {
+        "id": document_id,
+        "name": document["name"],
+        "created_by": document["created_by"],
+        "created_at": document["created_at"].isoformat(),
+        "updated_at": document["updated_at"].isoformat(),
+    }
+
+    return JsonResponse({"document": serialized_document})

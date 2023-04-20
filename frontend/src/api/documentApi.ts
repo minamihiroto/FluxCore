@@ -51,3 +51,13 @@ export const getDirectoryLinkedDocuments = async (directroyId: number) => {
     return [];
   }
 };
+
+export const getDocumentDetail = async (documentId: number) => {
+  try {
+    const response = await axios.get(`/document/${documentId}`);
+    return response.data.document;
+  } catch (error) {
+    console.error(`Error fetching document details: ${error}`);
+    throw error;
+  }
+};

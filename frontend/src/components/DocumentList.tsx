@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Document {
   id: number;
@@ -17,7 +18,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ documents }) => {
       <ul>
         {documents.map((document) => (
           <li key={document.id}>
-            <p>{document.name}</p>
+            <Link to={`/document/${document.id}`}>{document.name}</Link>
             <p>作成者:{document.created_by}</p>
           </li>
         ))}
