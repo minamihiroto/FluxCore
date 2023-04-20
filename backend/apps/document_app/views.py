@@ -16,7 +16,7 @@ def create_document(request):
     data = json.loads(request.body)
     document_name = data.get("name")
     created_by = data.get("user_id")
-    if data.get("box_id"):
+    if data.get("box_id") or data.get("box_id") == 0:
         box_id = data.get("box_id")
 
         query = f"MATCH (b:Box) WHERE ID(b) = {box_id} RETURN b"
@@ -32,7 +32,7 @@ def create_document(request):
         child_rel = Relationship(box_node, "child", document)
         graph.create(child_rel)
         return JsonResponse({"status": "success"})
-    elif data.get("directory_id"):
+    if data.get("directory_id") or data.get("directory_id") == 0:
         directory_id = data.get("directory_id")
 
         query = f"MATCH (b:Directory) WHERE ID(b) = {directory_id} RETURN b"
