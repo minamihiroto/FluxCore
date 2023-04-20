@@ -44,8 +44,8 @@ def register(request):
 def send_activation_email(user, token):
     activation_url = f"{settings.FRONTEND_URL}/login/?user_id_b64={urlsafe_base64_encode(force_bytes(user.pk))}&token={token}"
     subject = 'Activate your account'
-    message = f"Hello {user.username},\n\nPlease click the link below to activate your account:\n{activation_url}"
-    from_email = settings.EMAIL_HOST_USER
+    message = f"こんにちは {user.username}さん,fluxcoreにアクセスをお願いします。\n\n{activation_url}\n\n必ず本人がログインしていない状態で上記のURLにアクセスしてください。"
+    from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [user.email]
 
     send_mail(subject, message, from_email, recipient_list)

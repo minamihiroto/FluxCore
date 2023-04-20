@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
       </form>
       <BoxList boxes={boxes} />
       <Link to={"/register"}>新規ユーザー登録へ</Link>
-      <Link to={"/password-reset"}>パスワードを忘れた方へ</Link>
+      <Link to={"/password-reset"}>パスワードリセットする</Link>
       <button onClick={handleLogout}>ログアウト</button>
     </div>
   );
