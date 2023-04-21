@@ -6,11 +6,11 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Register from "./components/auth/Register";
+import Login from "./components/auth/Login";
 import Home from "./components/Home";
-import PasswordResetRequest from "./components/PasswordResetRequest";
-import PasswordResetConfirm from "./components/PasswordResetConfirm";
+import PasswordResetRequest from "./components/auth/PasswordResetRequest";
+import PasswordResetConfirm from "./components/auth/PasswordResetConfirm";
 import BoxDetail from "./components/BoxDetail";
 import axios from "axios";
 import DirectoryDetail from "./components/DirectoryDetail";
