@@ -8,4 +8,5 @@ urlpatterns = [
     path("directory/", include("apps.directory_app.urls")),
     path("document/", include("apps.document_app.urls")),
     path("breadcrumbs/", include("apps.breadcrumbs_app.urls")),
+    path("menu/", include("apps.menu_app.urls")),
 ]
