@@ -17,6 +17,5 @@ def fetch_tree(request):
     labels(startNode(last(r))) as parent_labels
     """
     tree_data = graph.run(query).data()
-    print(tree_data)
 
     return JsonResponse(tree_data, safe=False)

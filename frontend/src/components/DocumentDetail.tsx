@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getDocumentDetail, updateNoteInDocument,updateNameInDocument } from "../api/documentApi";
-import Breadcrumbs from "./Breadcrumbs";
+import {
+  getDocumentDetail,
+  updateNoteInDocument,
+  updateNameInDocument,
+} from "../api/documentApi";
+import Breadcrumbs from "./menu/Breadcrumbs";
 
 const DocumentDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,10 +36,15 @@ const DocumentDetail: React.FC = () => {
     }
   }, [document]);
 
-  const handleNoteChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleNoteChange = async (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setNote(e.target.value);
     if (document) {
-      const updatedDocument = await updateNoteInDocument(document.id, e.target.value);
+      const updatedDocument = await updateNoteInDocument(
+        document.id,
+        e.target.value
+      );
       setDocument(updatedDocument);
     }
   };

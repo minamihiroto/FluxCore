@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { createDirectoryLinkedDirectory,getDirectoryLinkedDirectories,updateNameInDirectory } from '../api/directoryApi';
-import { createDirectoryLinkedDocument, getDirectoryLinkedDocuments } from '../api/documentApi';
+import {
+  createDirectoryLinkedDirectory,
+  getDirectoryLinkedDirectories,
+  updateNameInDirectory,
+} from "../api/directoryApi";
+import {
+  createDirectoryLinkedDocument,
+  getDirectoryLinkedDocuments,
+} from "../api/documentApi";
 import { useParams } from "react-router-dom";
 import { getDirectoryDetail } from "../api/directoryApi";
-import DirectoryList from './DirectoryList';
-import DocumentList from './DocumentList';
-import Breadcrumbs from './Breadcrumbs';
-
+import DirectoryList from "./DirectoryList";
+import DocumentList from "./DocumentList";
+import Breadcrumbs from "./menu/Breadcrumbs";
 
 const DirectoryDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [directory, setDirectory] = useState<any>(null);
-  const [directoryName, setDirectoryName] = useState('');
-  const [documentName, setDocumentName] = useState('');
+  const [directoryName, setDirectoryName] = useState("");
+  const [documentName, setDocumentName] = useState("");
   const [directories, setDirectories] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [newName, setNewName] = useState("");
@@ -22,16 +28,20 @@ const DirectoryDetails: React.FC = () => {
     e.preventDefault();
     const userId = parseInt(localStorage.getItem("user_id") || "0", 10);
     if (id) {
-      const result = await createDirectoryLinkedDirectory(directoryName, userId, parseInt(id, 10));
+      const result = await createDirectoryLinkedDirectory(
+        directoryName,
+        userId,
+        parseInt(id, 10)
+      );
       if (result) {
         loadDirectories();
-        setDirectoryName('');
+        setDirectoryName("");
         return;
       } else {
-        alert('Error creating directory');
+        alert("Error creating directory");
       }
     } else {
-      console.error('Error: directory id is not defined.');
+      console.error("Error: directory id is not defined.");
     }
   };
 
@@ -39,16 +49,20 @@ const DirectoryDetails: React.FC = () => {
     e.preventDefault();
     const userId = parseInt(localStorage.getItem("user_id") || "0", 10);
     if (id) {
-      const result = await createDirectoryLinkedDocument(documentName, userId, parseInt(id, 10));
+      const result = await createDirectoryLinkedDocument(
+        documentName,
+        userId,
+        parseInt(id, 10)
+      );
       if (result) {
         loadDocuments();
-        setDocumentName('');
+        setDocumentName("");
         return;
       } else {
-        alert('Error creating document');
+        alert("Error creating document");
       }
     } else {
-      console.error('Error: directory id is not defined.');
+      console.error("Error: directory id is not defined.");
     }
   };
 
@@ -58,7 +72,7 @@ const DirectoryDetails: React.FC = () => {
       const directories = await getDirectoryLinkedDirectories(directoryId);
       setDirectories(directories);
     } else {
-      console.error('Error: directory id is not defined.');
+      console.error("Error: directory id is not defined.");
     }
   };
 
@@ -68,13 +82,13 @@ const DirectoryDetails: React.FC = () => {
       const documents = await getDirectoryLinkedDocuments(directoryId);
       setDocuments(documents);
     } else {
-      console.error('Error: directory id is not defined.');
+      console.error("Error: directory id is not defined.");
     }
   };
 
   const fetchDirectoryDetails = async () => {
     if (!id) {
-      console.error('Error: directory id is not defined.');
+      console.error("Error: directory id is not defined.");
       return;
     }
 
@@ -87,13 +101,16 @@ const DirectoryDetails: React.FC = () => {
     fetchDirectoryDetails();
     loadDirectories();
     loadDocuments();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleNameChange = async () => {
     if (id) {
       const directoryId = parseInt(id, 10);
-      const updatedDirectory = await updateNameInDirectory(directoryId, newName);
+      const updatedDirectory = await updateNameInDirectory(
+        directoryId,
+        newName
+      );
       if (updatedDirectory) {
         setDirectory(updatedDirectory);
         fetchDirectoryDetails();

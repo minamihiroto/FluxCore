@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getDirectoryBreadcrumbs, getDocumentBreadcrumbs } from "../api/breadcrumbApi";
-import { Link } from 'react-router-dom';
+import {
+  getDirectoryBreadcrumbs,
+  getDocumentBreadcrumbs,
+} from "../../api/breadcrumbApi";
+import { Link } from "react-router-dom";
 
 export interface Breadcrumb {
   id: number;
@@ -49,7 +52,9 @@ const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId }) => {
         } else if (isLast) {
           content = <span>{breadcrumb.name}</span>;
         } else {
-          content = <Link to={`/directory/${breadcrumb.id}`}>{breadcrumb.name}</Link>;
+          content = (
+            <Link to={`/directory/${breadcrumb.id}`}>{breadcrumb.name}</Link>
+          );
         }
 
         return (
