@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.directory_app',
     'apps.document_app',
     'apps.breadcrumbs_app',
+    'apps.menu_app',
     'rest_framework',
     'corsheaders',
 ]
