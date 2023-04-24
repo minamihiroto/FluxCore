@@ -5,7 +5,6 @@ import {
   updateNoteInDocument,
   updateNameInDocument,
 } from "../api/documentApi";
-import Breadcrumbs from "./menu/Breadcrumbs";
 
 const DocumentDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -71,7 +70,6 @@ const DocumentDetail: React.FC = () => {
 
   return (
     <div>
-      <Breadcrumbs documentId={document.id} />
       {isEditing ? (
         <div>
           <input

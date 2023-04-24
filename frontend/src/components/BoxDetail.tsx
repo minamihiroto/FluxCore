@@ -123,7 +123,6 @@ const BoxDetails: React.FC = () => {
 
   return (
     <div>
-      <h2>ボックス詳細</h2>
       {isEditing ? (
         <div>
           <input

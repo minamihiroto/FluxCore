@@ -28,9 +28,6 @@ const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId }) => {
         newBreadcrumbs = await getDocumentBreadcrumbs(documentId);
       }
 
-      const newItem: Breadcrumb = { id: 0, name: "TOP" };
-      newBreadcrumbs = [newItem, ...newBreadcrumbs];
-
       setBreadcrumbs(newBreadcrumbs);
     };
 
@@ -41,13 +38,10 @@ const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId }) => {
     <nav>
       {breadcrumbs.map((breadcrumb, index) => {
         const isFirst = index === 0;
-        const isSecond = index === 1;
         const isLast = index === breadcrumbs.length - 1;
 
         let content;
         if (isFirst) {
-          content = <Link to={`/`}>{breadcrumb.name}</Link>;
-        } else if (isSecond) {
           content = <Link to={`/box/${breadcrumb.id}`}>{breadcrumb.name}</Link>;
         } else if (isLast) {
           content = <span>{breadcrumb.name}</span>;

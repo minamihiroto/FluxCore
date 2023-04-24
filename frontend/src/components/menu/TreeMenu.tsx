@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
-import axios from "../axiosConfig"
+import axios from "../axiosConfig";
+import styles from "./style/TreeMenu.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBox, faFolder, faFile, faChevronRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBox,
+  faFolder,
+  faFile,
+  faChevronRight,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 interface TreeNode {
   id: number;
@@ -77,37 +86,31 @@ const TreeMenu: React.FC = () => {
   const renderTreeNodes = (nodes: TreeNodeWithChildren[]) => {
     return nodes.map((node) => (
       <React.Fragment key={node.id}>
-        <li style={{ listStyle: "none" }}>
+        <li className={styles.li}>
           {!node.node_labels.includes("Document") && (
             <FontAwesomeIcon
               icon={expandedNodes.has(node.id) ? faChevronDown : faChevronRight}
-              style={{
-                marginRight: "5px",
-                cursor: node.children.length > 0 ? "pointer" : "default",
-                color: node.children.length > 0 ? "inherit" : "gray",
-                pointerEvents: node.children.length > 0 ? "auto" : "none",
-              }}
-              onClick={() =>
-                node.children.length > 0 && handleClick(node.id)
-              }/>
+              className={classNames(styles.icon, {
+                [styles.pointer]: node.children.length > 0,
+                [styles.disabled]: node.children.length === 0 && (node.node_labels.includes("Box") || node.node_labels.includes("Directory")),
+              })}
+              onClick={() => node.children.length > 0 && handleClick(node.id)}
+            />
           )}
           {node.node_labels.includes("Box") && (
-            <FontAwesomeIcon icon={faBox} style={{ marginRight: "5px" }} />
+            <FontAwesomeIcon icon={faBox} className={styles.icon} />
           )}
           {node.node_labels.includes("Directory") && (
-            <FontAwesomeIcon icon={faFolder} style={{ marginRight: "5px" }} />
+            <FontAwesomeIcon icon={faFolder} className={styles.icon} />
           )}
           {node.node_labels.includes("Document") && (
-            <FontAwesomeIcon icon={faFile} style={{ marginRight: "5px" }} />
+            <FontAwesomeIcon icon={faFile} className={styles.icon} />
           )}
-          <span
-            onClick={() => handleNodeClick(node)}
-            style={{ cursor: "pointer", textDecoration: "underline" }}
-          >
+          <span onClick={() => handleNodeClick(node)} className={styles.text}>
             {node.name}
           </span>
           {node.children.length > 0 && expandedNodes.has(node.id) && (
-            <ul style={{ listStyle: "none" }}>{renderTreeNodes(node.children)}</ul>
+            <ul className={styles.ul}>{renderTreeNodes(node.children)}</ul>
           )}
         </li>
       </React.Fragment>
@@ -115,8 +118,9 @@ const TreeMenu: React.FC = () => {
   };
 
   return (
-    <div className="tree-menu">
-      <ul>{renderTreeNodes(tree)}</ul>
+    <div className={styles.tree}>
+      <Link to="/">FluxFlow</Link>
+      <ul className={styles.ul}>{renderTreeNodes(tree)}</ul>
     </div>
   );
 };

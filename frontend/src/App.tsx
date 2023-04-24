@@ -15,6 +15,9 @@ import BoxDetail from "./components/BoxDetail";
 import axios from "axios";
 import DirectoryDetail from "./components/DirectoryDetail";
 import DocumentDetail from "./components/DocumentDetail";
+import TreeMenu from "./components/menu/TreeMenu";
+import "./App.css";
+import HeaderMenu from "./components/menu/HeaderMenu";
 
 const AuthWrapper: React.FC = () => {
   const navigate = useNavigate();
@@ -60,23 +63,31 @@ const AuthWrapper: React.FC = () => {
     handleRedirect();
   }, [navigate, location.pathname]);
 
+  const isLoggedIn = localStorage.getItem("access");
+
   return (
-    <Routes>
-      {/* ログイン前 */}
-      <Route path="/login" element={<Login />} />
-      {/* ログイン後 */}
-      <Route path="/register" element={<Register />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/box/:id" element={<BoxDetail />} />
-      <Route path="/directory/:id" element={<DirectoryDetail/>}/>
-      <Route path="/document/:id" element={<DocumentDetail/>}/>
-      {/* どちらでもアクセス可能 */}
-      <Route path="/password-reset" element={<PasswordResetRequest />} />
-      <Route
-        path="/password-reset-confirm/:uidb64/:token"
-        element={<PasswordResetConfirm />}
-      />
-    </Routes>
+    <div className="app-container">
+      {isLoggedIn && <TreeMenu />}
+      <div className="routes-container">
+        {isLoggedIn && <HeaderMenu />}
+        <Routes>
+          {/* ログイン前 */}
+          <Route path="/login" element={<Login />} />
+          {/* ログイン後 */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/box/:id" element={<BoxDetail />} />
+          <Route path="/directory/:id" element={<DirectoryDetail />} />
+          <Route path="/document/:id" element={<DocumentDetail />} />
+          {/* どちらでもアクセス可能 */}
+          <Route path="/password-reset" element={<PasswordResetRequest />} />
+          <Route
+            path="/password-reset-confirm/:uidb64/:token"
+            element={<PasswordResetConfirm />}
+          />
+        </Routes>
+      </div>
+    </div>
   );
 };
 const App: React.FC = () => {

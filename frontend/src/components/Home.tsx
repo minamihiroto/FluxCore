@@ -57,7 +57,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <h1>Home</h1>
       <p>ようこそ, {username}</p>
       <p>user ID: {userId}</p>
       <form onSubmit={handleSubmit}>

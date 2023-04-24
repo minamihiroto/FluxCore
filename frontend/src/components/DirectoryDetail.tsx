@@ -12,7 +12,6 @@ import { useParams } from "react-router-dom";
 import { getDirectoryDetail } from "../api/directoryApi";
 import DirectoryList from "./DirectoryList";
 import DocumentList from "./DocumentList";
-import Breadcrumbs from "./menu/Breadcrumbs";
 
 const DirectoryDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -129,8 +128,6 @@ const DirectoryDetails: React.FC = () => {
 
   return (
     <div>
-      <Breadcrumbs directoryId={directory.id} />
-      <h2>ディレクトリ詳細</h2>
       {isEditing ? (
         <div>
           <input
