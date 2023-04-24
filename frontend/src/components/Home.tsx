@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { createBox, getBoxes } from '../api/boxApi';
-import axios from "../components/axiosConfig";
-import BoxList from './BoxList';
-import { Link } from 'react-router-dom';
+import { createBox, getBoxes } from "../api/boxApi";
+import BoxList from "./list/BoxList";
+import { Link } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [boxName, setBoxName] = useState('');
+  const [boxName, setBoxName] = useState("");
   const [boxes, setBoxes] = useState([]);
-  const [userId, setUserId] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +14,7 @@ const Dashboard: React.FC = () => {
     if (result) {
       loadBoxes();
     } else {
-      alert('Error creating box');
+      alert("Error creating box");
     }
   };
 
@@ -27,24 +24,6 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const token = localStorage.getItem("access");
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        const response = await axios.get("/auth/user/", config);
-        setUsername(response.data.username);
-        setUserId(response.data.id);
-        localStorage.setItem("user_id", response.data.id);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-
-    getUserInfo();
     loadBoxes();
   }, []);
 
@@ -57,8 +36,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <p>ようこそ, {username}</p>
-      <p>user ID: {userId}</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="boxName">ボックス作成</label>
         <input

@@ -10,8 +10,8 @@ import {
 } from "../api/documentApi";
 import { useParams } from "react-router-dom";
 import { getDirectoryDetail } from "../api/directoryApi";
-import DirectoryList from "./DirectoryList";
-import DocumentList from "./DocumentList";
+import DirectoryList from "./list/DirectoryList";
+import DocumentList from "./list/DocumentList";
 
 const DirectoryDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

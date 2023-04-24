@@ -7,12 +7,17 @@
   pointer-events: none;
 }
 
-.app-container {
+.container {
   display: flex;
 }
 
-.routes-container {
-  margin-left: 240px;
+.tree {
+  height: 100vh;
+  width: 12%;
+}
+
+.content{
+  width: 88%;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -9,8 +9,8 @@ import {
 } from "../api/documentApi";
 import { useParams } from "react-router-dom";
 import { getBoxDetail, updateBoxName } from "../api/boxApi";
-import DirectoryList from "./DirectoryList";
-import DocumentList from "./DocumentList";
+import DirectoryList from "./list/DirectoryList";
+import DocumentList from "./list/DocumentList";
 
 const BoxDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

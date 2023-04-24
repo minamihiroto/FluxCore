@@ -66,20 +66,21 @@ const AuthWrapper: React.FC = () => {
   const isLoggedIn = localStorage.getItem("access");
 
   return (
-    <div className="app-container">
-      {isLoggedIn && <TreeMenu />}
-      <div className="routes-container">
+    <div className="container">
+      {isLoggedIn && (
+        <div className="tree">
+          <TreeMenu />
+        </div>
+      )}
+      <div className="content">
         {isLoggedIn && <HeaderMenu />}
         <Routes>
-          {/* ログイン前 */}
           <Route path="/login" element={<Login />} />
-          {/* ログイン後 */}
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/box/:id" element={<BoxDetail />} />
           <Route path="/directory/:id" element={<DirectoryDetail />} />
           <Route path="/document/:id" element={<DocumentDetail />} />
-          {/* どちらでもアクセス可能 */}
           <Route path="/password-reset" element={<PasswordResetRequest />} />
           <Route
             path="/password-reset-confirm/:uidb64/:token"

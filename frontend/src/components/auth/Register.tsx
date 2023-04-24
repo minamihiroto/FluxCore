@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "../axiosConfig";
-import { useNavigate,Link } from "react-router-dom";
+import axios from "../config/axiosConfig";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");

@@ -1,4 +1,4 @@
-import axios from '../components/axiosConfig';
+import axios from '../components/config/axiosConfig';
 
 export const createBoxLinkedDocument = async (documentName: string, userId: number, boxId: number) => {
   try {

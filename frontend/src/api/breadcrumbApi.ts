@@ -1,4 +1,4 @@
-import axios from "../components/axiosConfig";
+import axios from "../components/config/axiosConfig";
 
 export interface Breadcrumb {
   id: number;

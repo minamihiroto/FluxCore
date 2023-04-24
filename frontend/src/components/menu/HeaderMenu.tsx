@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
 import { getBoxDetail } from "../../api/boxApi";
+import axios from "../config/axiosConfig";
+import styles from "./style/HeaderMenu.module.css";
 
 interface MenuProps {}
 
@@ -15,6 +17,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   const [documentId, setDocumentId] = useState<number | undefined>();
   const [boxId, setBoxId] = useState<number | undefined>();
   const [boxName, setBoxName] = useState<string | undefined>();
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     if (pathMatch) {
@@ -45,6 +48,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
         try {
           const boxDetail = await getBoxDetail(boxId);
           setBoxName(boxDetail.name);
+          console.log("Fetching box details", boxDetail.name);
         } catch (error) {
           console.error("Error fetching box details:", error);
         }
@@ -59,14 +63,40 @@ const HeaderMenu: React.FC<MenuProps> = () => {
     showBreadcrumbs = true;
   }
 
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const response = await axios.get("/auth/user/", config);
+        setUsername(response.data.username);
+        localStorage.setItem("user_id", response.data.id);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    getUserInfo();
+  }, []);
+
+  const isHomePage = location.pathname === "/";
+
   return (
-    <div className="menu">
+    <div className={styles.headerMenuContainer}>
       {showBreadcrumbs && (
-        <Breadcrumbs directoryId={directoryId} documentId={documentId} />
+        <div className={styles.breadcrumbsContainer}>
+          <Breadcrumbs directoryId={directoryId} documentId={documentId} />
+        </div>
       )}
-      {boxId || boxId === 0 ? (
-        <div className="box-name">{boxName}</div>
-      ) : null}
+        {boxId || boxId === 0 ? (
+          <div className={styles.boxName}>{boxName}</div>
+        ) : null}
+      {isHomePage && <div className={styles.homeText}>Home</div>}
+      <div className={styles.userInfo}>{username}</div>
     </div>
   );
 };

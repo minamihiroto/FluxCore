@@ -1,14 +1,10 @@
 .tree {
   font-size: 14px;
-  position: fixed;
   top: 0;
   left: 0;
-  width: 200px;
   height: 100%;
-  background-color: #f0f0f0;
   overflow-y: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 0;
+  border-right: 1px solid #e3e3e3;
 }
 
 .ul {
@@ -19,11 +15,13 @@
 
 .li {
   list-style: none;
-  padding-left: 16px;
+  padding-left: 22px;
+  padding-top: 8px;
+
 }
 
 .icon {
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
 .pointer {
@@ -32,9 +30,28 @@
 
 .text {
   cursor: pointer;
+}
+
+.text:hover {
   text-decoration: underline;
 }
 
 .disabled {
   color: gray;
+}
+
+.boxItem {
+  padding: 12px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.logo {
+  font-size: 1.25rem;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
 }

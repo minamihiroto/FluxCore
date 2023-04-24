@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../axiosConfig";
+import axios from "../config/axiosConfig";
 import styles from "./style/TreeMenu.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -86,13 +86,20 @@ const TreeMenu: React.FC = () => {
   const renderTreeNodes = (nodes: TreeNodeWithChildren[]) => {
     return nodes.map((node) => (
       <React.Fragment key={node.id}>
-        <li className={styles.li}>
+        <li
+          className={classNames(styles.li, {
+            [styles.boxItem]: node.node_labels.includes("Box"),
+          })}
+        >
           {!node.node_labels.includes("Document") && (
             <FontAwesomeIcon
               icon={expandedNodes.has(node.id) ? faChevronDown : faChevronRight}
               className={classNames(styles.icon, {
                 [styles.pointer]: node.children.length > 0,
-                [styles.disabled]: node.children.length === 0 && (node.node_labels.includes("Box") || node.node_labels.includes("Directory")),
+                [styles.disabled]:
+                  node.children.length === 0 &&
+                  (node.node_labels.includes("Box") ||
+                    node.node_labels.includes("Directory")),
               })}
               onClick={() => node.children.length > 0 && handleClick(node.id)}
             />
@@ -119,7 +126,7 @@ const TreeMenu: React.FC = () => {
 
   return (
     <div className={styles.tree}>
-      <Link to="/">FluxFlow</Link>
+      <Link to="/" className={styles.logo}>FluxFlow</Link>
       <ul className={styles.ul}>{renderTreeNodes(tree)}</ul>
     </div>
   );
