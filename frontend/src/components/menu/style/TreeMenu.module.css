@@ -17,7 +17,6 @@
   list-style: none;
   padding-left: 22px;
   padding-top: 8px;
-
 }
 
 .icon {
@@ -30,6 +29,16 @@
 
 .text {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.nodeName {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;  /* この値は必要に応じて調整してください */
 }
 
 .text:hover {
