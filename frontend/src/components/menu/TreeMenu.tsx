@@ -91,7 +91,7 @@ const TreeMenu: React.FC = () => {
             [styles.boxItem]: node.node_labels.includes("Box"),
           })}
         >
-          <div>
+          <div className={classNames(styles.text)}>
             {!node.node_labels.includes("Document") && (
               <FontAwesomeIcon
                 icon={
@@ -107,21 +107,21 @@ const TreeMenu: React.FC = () => {
                 onClick={() => node.children.length > 0 && handleClick(node.id)}
               />
             )}
-          </div>
-          <div
-            onClick={() => handleNodeClick(node)}
-            className={classNames(styles.text)}
-          >
-            {node.node_labels.includes("Box") && (
-              <FontAwesomeIcon icon={faBox} className={styles.icon} />
-            )}
-            {node.node_labels.includes("Directory") && (
-              <FontAwesomeIcon icon={faFolder} className={styles.icon} />
-            )}
-            {node.node_labels.includes("Document") && (
-              <FontAwesomeIcon icon={faFile} className={styles.icon} />
-            )}
-            <span className={styles.nodeName}>{node.name}</span>
+            <span
+              onClick={() => handleNodeClick(node)}
+              className={styles.nodeName}
+            >
+              {node.node_labels.includes("Box") && (
+                <FontAwesomeIcon icon={faBox} className={styles.icon} />
+              )}
+              {node.node_labels.includes("Directory") && (
+                <FontAwesomeIcon icon={faFolder} className={styles.icon} />
+              )}
+              {node.node_labels.includes("Document") && (
+                <FontAwesomeIcon icon={faFile} className={styles.icon} />
+              )}
+              {node.name}
+            </span>
           </div>
           {node.children.length > 0 && expandedNodes.has(node.id) && (
             <ul className={styles.ul}>{renderTreeNodes(node.children)}</ul>
