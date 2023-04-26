@@ -1,0 +1,38 @@
+.boxContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.boxItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  width: 150px;
+  height: 150px;
+  box-shadow: 0 4px 4px rgba(150, 150, 150, 0.5);
+}
+
+.boxItem:hover {
+  box-shadow: 0 0px 0px rgba(150, 150, 150, 0.8);
+}
+
+.boxItemLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.boxCreator {
+  font-size: 14px;
+  color: #333;
+  margin-top: 5px;
+}
+
+.box{
+  margin: 16px;
+}

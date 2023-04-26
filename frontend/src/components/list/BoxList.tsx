@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import styles from "./style/BoxList.module.css";
 
 interface Box {
   id: number;
@@ -14,13 +15,14 @@ interface BoxListProps {
 const BoxList: React.FC<BoxListProps> = ({ boxes }) => {
   return (
     <div>
-      <h2>ボックス一覧</h2>
-      <ul>
+      <ul className={styles.boxContainer}>
         {boxes.map((box) => (
-          <li key={box.id}>
-            <Link to={`/box/${box.id}`}>{box.name}</Link>
-            <p>作成者:{box.created_by}</p>
-          </li>
+          <Link to={`/box/${box.id}`} style={{ textDecoration: 'none' }} className={styles.box}>
+            <li key={box.id} className={styles.boxItem}>
+              <div className={styles.boxItemLink}>{box.name}</div>
+              <p className={styles.boxCreator}>作成者:{box.created_by}</p>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

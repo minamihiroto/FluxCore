@@ -4,7 +4,7 @@ import {
   getDocumentDetail,
   updateNoteInDocument,
   updateNameInDocument,
-} from "../api/documentApi";
+} from "../../api/documentApi";
 
 const DocumentDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
