@@ -14,18 +14,21 @@ interface BoxListProps {
 
 const BoxList: React.FC<BoxListProps> = ({ boxes }) => {
   return (
-    <div>
-      <ul className={styles.boxContainer}>
-        {boxes.map((box) => (
-          <Link to={`/box/${box.id}`} style={{ textDecoration: 'none' }} className={styles.box}>
-            <li key={box.id} className={styles.boxItem}>
-              <div className={styles.boxItemLink}>{box.name}</div>
-              <p className={styles.boxCreator}>作成者:{box.created_by}</p>
-            </li>
-          </Link>
-        ))}
-      </ul>
-    </div>
+    <ul className={styles.boxContainer}>
+      {boxes.map((box) => (
+        <Link
+          to={`/box/${box.id}`}
+          style={{ textDecoration: "none" }}
+          key={box.id}
+          className={styles.box}
+        >
+          <li className={styles.boxItem}>
+            <div className={styles.boxItemLink}>{box.name}</div>
+            <p className={styles.boxCreator}>作成者:{box.created_by}</p>
+          </li>
+        </Link>
+      ))}
+    </ul>
   );
 };
 

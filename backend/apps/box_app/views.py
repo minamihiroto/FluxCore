@@ -17,14 +17,12 @@ graph = Graph(os.environ.get('BOLT_URL'), auth=(
 def create_box(request):
     data = json.loads(request.body)
     box_name = data.get("name")
+    box_explain = data.get("explain")
     created_by = data.get("user_id")
-    box = Node("Box", name=box_name, created_by=created_by,
+    box = Node("Box", name=box_name, explain=box_explain, created_by=created_by,
                created_at=datetime.now(), updated_at=datetime.now())
     graph.create(box)
     return JsonResponse({"status": "success"})
-
-# Box一覧を取得するエンドポイント
-
 
 @api_view(['GET'])
 def get_boxes(request):

@@ -1,7 +1,9 @@
 .boxContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  margin: 0 auto;
+  padding: 0px;
+  max-width: 1060px;
 }
 
 .boxItem {
@@ -34,5 +36,5 @@
 }
 
 .box{
-  margin: 16px;
+  margin: 20px;
 }

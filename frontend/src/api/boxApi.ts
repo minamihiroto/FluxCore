@@ -1,6 +1,6 @@
 import axios from '../components/config/axiosConfig';
 
-export const createBox = async (boxName: string, userId: number) => {
+export const createBox = async (boxName: string, boxExplain: string, userId: number) => {
   try {
     const token = localStorage.getItem("access");
     const config = {
@@ -8,7 +8,7 @@ export const createBox = async (boxName: string, userId: number) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = await axios.post('/box/create/', { name: boxName, user_id: userId }, config);
+    const response = await axios.post('/box/create/', { name: boxName, explain: boxExplain, user_id: userId }, config);
     return response.data;
   } catch (error) {
     console.error("Error creating box:", error);
