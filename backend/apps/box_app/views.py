@@ -24,6 +24,7 @@ def create_box(request):
     graph.create(box)
     return JsonResponse({"status": "success"})
 
+
 @api_view(['GET'])
 def get_boxes(request):
     query = f"MATCH (b:Box) RETURN b"
@@ -54,6 +55,7 @@ def get_box_details(request, box_id):
     serialized_box = {
         "id": box_id,
         "name": box["name"],
+        "explain": box['explain'],
         "created_by": box["created_by"],
         "created_at": box["created_at"].isoformat(),
         "updated_at": box["updated_at"].isoformat(),

@@ -146,6 +146,7 @@ const BoxDetails: React.FC = () => {
           </button>
         </p>
       )}
+      <p>説明: {box.explain}</p>
       <p>作成者ID: {box.created_by}</p>
       <p>作成日時: {box.created_at}</p>
       <p>更新日時: {box.updated_at}</p>
