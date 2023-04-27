@@ -4,6 +4,7 @@ import Breadcrumbs from "./Breadcrumbs";
 import { getBoxDetail } from "../../api/boxApi";
 import axios from "../config/axiosConfig";
 import styles from "./style/HeaderMenu.module.css";
+import { Link } from "react-router-dom";
 
 interface MenuProps {}
 
@@ -96,7 +97,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
           <div className={styles.boxName}>{boxName}</div>
         ) : null}
       {isHomePage && <div className={styles.homeText}>Home</div>}
-      <div className={styles.userInfo}>{username}</div>
+      <Link to="/profile" className={styles.userInfo}>{username}</Link>
     </div>
   );
 };

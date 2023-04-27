@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createBox, getBoxes } from "../api/boxApi";
 import BoxList from "./list/BoxList";
-import { Link } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
   const [boxName, setBoxName] = useState("");
@@ -29,13 +28,6 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     loadBoxes();
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    localStorage.removeItem("user_id");
-    window.location.href = "/login";
-  };
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -79,9 +71,6 @@ const Dashboard: React.FC = () => {
         </Modal>
       )}
       <BoxList boxes={boxes} />
-      <Link to={"/register"}>新規ユーザー登録へ</Link>
-      <Link to={"/password-reset"}>パスワードリセットする</Link>
-      <button onClick={handleLogout}>ログアウト</button>
     </div>
   );
 };
