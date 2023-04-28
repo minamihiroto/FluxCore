@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
+import { passwordResetConfirm } from '../../api/authApi';
+
 
 const PasswordResetConfirm: React.FC = () => {
   const [password, setPassword] = useState<string>('');
@@ -12,14 +13,16 @@ const PasswordResetConfirm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!uidb64 || !token) {
+      return;
+    }
+
     try {
-      const response = await axios.post(`/auth/password-reset-confirm/${uidb64}/${token}/`, { password });
+      const response = await passwordResetConfirm(uidb64,token, password);
       setMessage(response.data.message);
-      setError(null);
       setTimeout(() => navigate('/login'), 3000);
     } catch (err) {
-      setError('Error resetting password.');
-      setMessage(null);
+      setError('エラーが発生しました。');
     }
   };
 

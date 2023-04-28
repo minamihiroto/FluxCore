@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { checkLoggedIn, requestPasswordReset } from '../../api/authApi';
 
 const PasswordResetRequest: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -7,30 +7,10 @@ const PasswordResetRequest: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || '',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('access');
-      if (token) {
-        config.headers['Authorization'] = 'Bearer ' + token;
-      }
-      return config;
-    },
-    (error) => {
-      Promise.reject(error);
-    }
-  );
-
   useEffect(() => {
-    const checkLoggedIn = async () => {
+    const checkUserLoggedIn = async () => {
       try {
-        const response = await axiosInstance.get('auth/user/');
+        const response = await checkLoggedIn();
         if (response.status === 200) {
           setEmail(response.data.email);
           setLoggedIn(true);
@@ -39,7 +19,7 @@ const PasswordResetRequest: React.FC = () => {
         setLoggedIn(false);
       }
     };
-    checkLoggedIn();
+    checkUserLoggedIn();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -47,7 +27,7 @@ const PasswordResetRequest: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await axiosInstance.post(`auth/password-reset/`, { email });
+      const response = await requestPasswordReset(email);
       setMessage(response.data.message);
       setError(null);
     } catch (err) {
