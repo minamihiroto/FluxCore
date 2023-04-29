@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
 import { getBoxDetail } from "../../api/boxApi";
-import axios from "../config/axiosConfig";
 import styles from "./style/HeaderMenu.module.css";
 import { Link } from "react-router-dom";
+import { checkLoggedIn } from "../../api/authApi";
 
 interface MenuProps {}
 
@@ -58,21 +58,10 @@ const HeaderMenu: React.FC<MenuProps> = () => {
     }
   }, [boxId]);
 
-  let showBreadcrumbs = false;
-  if (pathMatch && (directoryId || documentId)) {
-    showBreadcrumbs = true;
-  }
-
   useEffect(() => {
     const getUserInfo = async () => {
       try {
-        const token = localStorage.getItem("access");
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        const response = await axios.get("/auth/user/", config);
+        const response = await checkLoggedIn();
         setUsername(response.data.username);
         localStorage.setItem("user_id", response.data.id);
       } catch (error) {
@@ -85,6 +74,10 @@ const HeaderMenu: React.FC<MenuProps> = () => {
 
   const isHomePage = location.pathname === "/";
   const shouldShowBoxName = boxId || boxId === 0;
+  let showBreadcrumbs = false;
+  if (pathMatch && (directoryId || documentId)) {
+    showBreadcrumbs = true;
+  }
 
   return (
     <div className={styles.headerMenuContainer}>
