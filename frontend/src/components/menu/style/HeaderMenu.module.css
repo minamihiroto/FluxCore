@@ -6,11 +6,6 @@
   border-bottom: 1px solid #e3e3e3;
 }
 
-.breadcrumbsContainer {
-  display: flex;
-  align-items: center;
-}
-
 .userInfo {
   font-size: 0.9rem;
   height: auto;

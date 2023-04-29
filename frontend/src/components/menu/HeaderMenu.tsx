@@ -49,7 +49,6 @@ const HeaderMenu: React.FC<MenuProps> = () => {
         try {
           const boxDetail = await getBoxDetail(boxId);
           setBoxName(boxDetail.name);
-          console.log("Fetching box details", boxDetail.name);
         } catch (error) {
           console.error("Error fetching box details:", error);
         }
@@ -60,7 +59,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   }, [boxId]);
 
   let showBreadcrumbs = false;
-  if (pathMatch && (directoryId || documentId || boxId)) {
+  if (pathMatch && (directoryId || documentId)) {
     showBreadcrumbs = true;
   }
 
@@ -85,6 +84,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   }, []);
 
   const isHomePage = location.pathname === "/";
+  const shouldShowBoxName = boxId || boxId === 0;
 
   return (
     <div className={styles.headerMenuContainer}>
@@ -93,11 +93,14 @@ const HeaderMenu: React.FC<MenuProps> = () => {
           <Breadcrumbs directoryId={directoryId} documentId={documentId} />
         </div>
       )}
-        {boxId || boxId === 0 ? (
-          <div className={styles.boxName}>{boxName}</div>
-        ) : null}
-      {isHomePage && <div className={styles.homeText}>Home</div>}
-      <Link to="/profile" className={styles.userInfo}>{username}</Link>
+      {isHomePage && <div>Home</div>}
+      {shouldShowBoxName && <div className={styles.boxName}>{boxName}</div>}
+      {!showBreadcrumbs && !shouldShowBoxName && !isHomePage && (
+        <p></p>
+      )}
+      <Link to="/profile" className={styles.userInfo}>
+        {username}
+      </Link>
     </div>
   );
 };
