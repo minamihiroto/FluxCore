@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
-import { getBoxDetail } from "../../api/boxApi";
 import styles from "./style/HeaderMenu.module.css";
 import { Link } from "react-router-dom";
 import { checkLoggedIn } from "../../api/authApi";
@@ -17,7 +16,6 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   const [directoryId, setDirectoryId] = useState<number | undefined>();
   const [documentId, setDocumentId] = useState<number | undefined>();
   const [boxId, setBoxId] = useState<number | undefined>();
-  const [boxName, setBoxName] = useState<string | undefined>();
   const [username, setUsername] = useState("");
 
   useEffect(() => {
@@ -44,21 +42,6 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   }, [location.pathname, pathMatch]);
 
   useEffect(() => {
-    if (boxId || boxId === 0) {
-      const fetchBoxDetails = async () => {
-        try {
-          const boxDetail = await getBoxDetail(boxId);
-          setBoxName(boxDetail.name);
-        } catch (error) {
-          console.error("Error fetching box details:", error);
-        }
-      };
-
-      fetchBoxDetails();
-    }
-  }, [boxId]);
-
-  useEffect(() => {
     const getUserInfo = async () => {
       try {
         const response = await checkLoggedIn();
@@ -73,9 +56,8 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   }, []);
 
   const isHomePage = location.pathname === "/";
-  const shouldShowBoxName = boxId || boxId === 0;
   let showBreadcrumbs = false;
-  if (pathMatch && (directoryId || documentId)) {
+  if (pathMatch && (directoryId || documentId|| boxId)) {
     showBreadcrumbs = true;
   }
 
@@ -83,14 +65,11 @@ const HeaderMenu: React.FC<MenuProps> = () => {
     <div className={styles.headerMenuContainer}>
       {showBreadcrumbs && (
         <div className={styles.breadcrumbsContainer}>
-          <Breadcrumbs directoryId={directoryId} documentId={documentId} />
+          <Breadcrumbs directoryId={directoryId} documentId={documentId} boxId={boxId} />
         </div>
       )}
       {isHomePage && <div>Home</div>}
-      {shouldShowBoxName && <div className={styles.boxName}>{boxName}</div>}
-      {!showBreadcrumbs && !shouldShowBoxName && !isHomePage && (
-        <p></p>
-      )}
+      {!showBreadcrumbs && !isHomePage && <p></p>}
       <Link to="/profile" className={styles.userInfo}>
         {username}
       </Link>

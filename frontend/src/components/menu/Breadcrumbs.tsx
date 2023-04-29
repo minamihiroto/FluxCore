@@ -4,6 +4,7 @@ import {
   getDocumentBreadcrumbs,
 } from "../../api/breadcrumbApi";
 import { Link } from "react-router-dom";
+import { getBoxDetail } from "../../api/boxApi";
 
 export interface Breadcrumb {
   id: number;
@@ -13,10 +14,28 @@ export interface Breadcrumb {
 interface Props {
   directoryId?: number;
   documentId?: number;
+  boxId?: number;
 }
 
-const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId }) => {
+const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId, boxId }) => {
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+  const [boxName, setBoxName] = useState<string | undefined>();
+  const shouldShowBoxName = boxId || boxId === 0;
+
+  useEffect(() => {
+    if (boxId || boxId === 0) {
+      const fetchBoxDetails = async () => {
+        try {
+          const boxDetail = await getBoxDetail(boxId);
+          setBoxName(boxDetail.name);
+        } catch (error) {
+          console.error("Error fetching box details:", error);
+        }
+      };
+
+      fetchBoxDetails();
+    }
+  }, [boxId]);
 
   useEffect(() => {
     const fetchBreadcrumbs = async () => {
@@ -50,7 +69,6 @@ const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId }) => {
             <Link to={`/directory/${breadcrumb.id}`}>{breadcrumb.name}</Link>
           );
         }
-
         return (
           <span key={breadcrumb.id}>
             {content}
@@ -58,6 +76,7 @@ const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId }) => {
           </span>
         );
       })}
+      {shouldShowBoxName && <div>{boxName}</div>}
     </nav>
   );
 };
