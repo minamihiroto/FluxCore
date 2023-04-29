@@ -6,6 +6,8 @@ interface Box {
   id: number;
   name: string;
   created_by: number;
+  created_at: string;
+  updated_at: string;
 }
 
 interface BoxListProps {
@@ -13,9 +15,13 @@ interface BoxListProps {
 }
 
 const BoxList: React.FC<BoxListProps> = ({ boxes }) => {
+  const sortedBoxes = [...boxes].sort((a, b) => {
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+  });
+
   return (
     <ul className={styles.boxContainer}>
-      {boxes.map((box) => (
+      {sortedBoxes.map((box) => (
         <Link
           to={`/box/${box.id}`}
           style={{ textDecoration: "none" }}

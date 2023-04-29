@@ -62,8 +62,13 @@ def get_box_documents(request, box_id):
 
     for record in result:
         document = record['d']
-        documents.append(
-            {"id": document.identity, "name": document['name'], "created_by": document['created_by']})
+        documents.append({
+            "id": document.identity,
+            "name": document['name'],
+            "created_by": document['created_by'],
+            "created_at": document["created_at"].isoformat(),
+            "updated_at": document["updated_at"].isoformat(),
+        })
 
     return JsonResponse({"documents": documents})
 
@@ -76,8 +81,13 @@ def get_directory_documents(request, directory_id):
 
     for record in result:
         document = record['d']
-        documents.append(
-            {"id": document.identity, "name": document['name'], "created_by": document['created_by']})
+        documents.append({
+            "id": document.identity,
+            "name": document['name'],
+            "created_by": document['created_by'],
+            "created_at": document["created_at"].isoformat(),
+            "updated_at": document["updated_at"].isoformat(),
+        })
 
     return JsonResponse({"documents": documents})
 
@@ -105,6 +115,7 @@ def get_document_details(request, document_id):
     }
 
     return JsonResponse({"document": serialized_document})
+
 
 @api_view(['PATCH'])
 @csrf_exempt

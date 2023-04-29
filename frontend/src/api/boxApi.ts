@@ -1,4 +1,5 @@
 import axios from '../components/config/axiosConfig';
+import { treeMenuRefreshEvent } from "../hooks/useTreeMenuRefresh";
 
 export const createBox = async (boxName: string, boxExplain: string, userId: number) => {
   try {
@@ -9,6 +10,7 @@ export const createBox = async (boxName: string, boxExplain: string, userId: num
       },
     };
     const response = await axios.post('/box/create/', { name: boxName, explain: boxExplain, user_id: userId }, config);
+    document.dispatchEvent(treeMenuRefreshEvent);
     return response.data;
   } catch (error) {
     console.error("Error creating box:", error);
@@ -45,6 +47,7 @@ export const updateBoxName = async (boxId: number, newName: string) => {
       },
     };
     const response = await axios.patch(`/box/update/${boxId}/`, { name: newName }, config);
+    document.dispatchEvent(treeMenuRefreshEvent);
     return response.data.box;
   } catch (error) {
     console.error("Error updating box name:", error);

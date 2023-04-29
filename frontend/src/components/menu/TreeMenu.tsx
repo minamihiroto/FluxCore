@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
+import { useTreeMenuRefresh } from "../../hooks/useTreeMenuRefresh";
 
 interface TreeNode {
   id: number;
@@ -20,6 +21,7 @@ interface TreeNode {
   created_by: number;
   parentId: number | null;
   parent_labels: string[] | null;
+  created_at: string;
 }
 
 interface TreeNodeWithChildren extends TreeNode {
@@ -32,15 +34,18 @@ const TreeMenu: React.FC = () => {
   const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set());
   const navigate = useNavigate();
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("/menu/tree/");
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useTreeMenuRefresh(fetchData);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/menu/tree/");
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
   }, []);
 
@@ -55,6 +60,12 @@ const TreeMenu: React.FC = () => {
           ...node,
           children: buildTree(nodes, node.id),
         }));
+
+      treeNodes.sort(
+        (a, b) =>
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
+
       return treeNodes;
     };
 

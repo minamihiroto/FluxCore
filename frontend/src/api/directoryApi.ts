@@ -1,4 +1,5 @@
 import axios from '../components/config/axiosConfig';
+import { treeMenuRefreshEvent } from "../hooks/useTreeMenuRefresh";
 
 export const createBoxLinkedDirectory = async (directoryName: string, userId: number, boxId: number) => {
   try {
@@ -9,6 +10,24 @@ export const createBoxLinkedDirectory = async (directoryName: string, userId: nu
       },
     };
     const response = await axios.post('/directory/create/', { name: directoryName, user_id: userId, box_id: boxId }, config);
+    document.dispatchEvent(treeMenuRefreshEvent);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating directory:", error);
+    return null;
+  }
+};
+
+export const createDirectoryLinkedDirectory = async (directoryName: string, userId: number, directoryId: number) => {
+  try {
+    const token = localStorage.getItem("access");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.post('/directory/create/', { name: directoryName, user_id: userId, directory_id: directoryId }, config);
+    document.dispatchEvent(treeMenuRefreshEvent);
     return response.data;
   } catch (error) {
     console.error("Error creating directory:", error);
@@ -36,22 +55,6 @@ export const getDirectoryDetail = async (directoryId: number) => {
   }
 };
 
-export const createDirectoryLinkedDirectory = async (directoryName: string, userId: number, directoryId: number) => {
-  try {
-    const token = localStorage.getItem("access");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await axios.post('/directory/create/', { name: directoryName, user_id: userId, directory_id: directoryId }, config);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating directory:", error);
-    return null;
-  }
-};
-
 export const getDirectoryLinkedDirectories = async (directoryId: number) => {
   try {
     const response = await axios.get(`/directory/directorylist/${directoryId}`);
@@ -71,6 +74,7 @@ export const updateNameInDirectory = async (directoryId: number, newName: string
       },
     };
     const response = await axios.patch(`/directory/update/${directoryId}/`, { name: newName }, config);
+    document.dispatchEvent(treeMenuRefreshEvent);
     return response.data.directory;
   } catch (error) {
     console.error(`Error updating note in directory: ${error}`);

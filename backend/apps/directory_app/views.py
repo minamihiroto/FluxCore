@@ -8,7 +8,9 @@ from rest_framework.decorators import api_view
 import json
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
-graph = Graph(os.environ.get('BOLT_URL'), auth=(os.environ.get('BOLT_USER'), os.environ.get('BOLT_PASSWORD')))
+graph = Graph(os.environ.get('BOLT_URL'), auth=(
+    os.environ.get('BOLT_USER'), os.environ.get('BOLT_PASSWORD')))
+
 
 @api_view(['POST'])
 @csrf_exempt
@@ -24,7 +26,8 @@ def create_directory(request):
         if not box_data:
             return JsonResponse({"error": "Box not found"})
         box_node = box_data[0]['b']
-        directory = Node("Directory", name=directory_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
+        directory = Node("Directory", name=directory_name, created_by=created_by,
+                         created_at=datetime.now(), updated_at=datetime.now())
         graph.create(directory)
         child_rel = Relationship(box_node, "child", directory)
         graph.create(child_rel)
@@ -36,11 +39,13 @@ def create_directory(request):
         if not directory_data:
             return JsonResponse({"error": "Directory not found"})
         directory_node = directory_data[0]['b']
-        directory = Node("Directory", name=directory_name, created_by=created_by, created_at=datetime.now(), updated_at=datetime.now())
+        directory = Node("Directory", name=directory_name, created_by=created_by,
+                         created_at=datetime.now(), updated_at=datetime.now())
         graph.create(directory)
         child_rel = Relationship(directory_node, "child", directory)
         graph.create(child_rel)
         return JsonResponse({"status": "success"})
+
 
 @api_view(['GET'])
 def get_box_directories(request, box_id):
@@ -50,9 +55,16 @@ def get_box_directories(request, box_id):
 
     for record in result:
         directory = record['d']
-        directories.append({"id": directory.identity, "name": directory['name'], "created_by": directory['created_by']})
+        directories.append({
+            "id": directory.identity,
+            "name": directory['name'],
+            "created_by": directory['created_by'],
+            "created_at": directory["created_at"].isoformat(),
+            "updated_at": directory["updated_at"].isoformat(),
+        })
 
     return JsonResponse({"directories": directories})
+
 
 @api_view(['GET'])
 def get_directory_directories(request, directory_id):
@@ -62,9 +74,16 @@ def get_directory_directories(request, directory_id):
 
     for record in result:
         directory = record['d']
-        directories.append({"id": directory.identity, "name": directory['name'], "created_by": directory['created_by']})
+        directories.append({
+            "id": directory.identity,
+            "name": directory['name'],
+            "created_by": directory['created_by'],
+            "created_at": directory["created_at"].isoformat(),
+            "updated_at": directory["updated_at"].isoformat(),
+        })
 
     return JsonResponse({"directories": directories})
+
 
 def get_directory_details(request, directory_id):
     query = f"""
@@ -88,6 +107,7 @@ def get_directory_details(request, directory_id):
     }
 
     return JsonResponse({"directory": serialized_directory})
+
 
 @api_view(['PATCH'])
 @csrf_exempt

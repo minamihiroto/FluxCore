@@ -33,8 +33,13 @@ def get_boxes(request):
 
     for record in result:
         box = record['b']
-        boxes.append(
-            {"id": box.identity, "name": box['name'], "created_by": box['created_by']})
+        boxes.append({
+            "id": box.identity,
+            "name": box['name'],
+            "created_by": box['created_by'],
+            "created_at": box["created_at"].isoformat(),
+            "updated_at": box["updated_at"].isoformat(),
+        })
 
     return JsonResponse({"boxes": boxes})
 

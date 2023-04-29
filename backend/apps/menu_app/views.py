@@ -12,9 +12,9 @@ def fetch_tree(request):
     query = """
     MATCH (b:Box)-[r:child*0..]->(d)
     WHERE (b:Box) OR (d:Directory) OR (d:Document)
-    RETURN ID(d) as id, d.name as name, labels(d) as node_labels, 
+    RETURN ID(d) as id, d.name as name, labels(d) as node_labels,
     d.created_by as created_by, ID(startNode(last(r))) as parentId,
-    labels(startNode(last(r))) as parent_labels
+    labels(startNode(last(r))) as parent_labels, toString(d.created_at) as created_at
     """
     tree_data = graph.run(query).data()
 
