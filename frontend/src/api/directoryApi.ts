@@ -1,5 +1,6 @@
 import axios from '../components/config/axiosConfig';
 import { treeMenuRefreshEvent } from "../hooks/useTreeMenuRefresh";
+import { breadcrumbRefreshEvent } from "../hooks/useBreadcrumbRefresh";
 
 export const createBoxLinkedDirectory = async (directoryName: string, userId: number, boxId: number) => {
   try {
@@ -75,6 +76,7 @@ export const updateNameInDirectory = async (directoryId: number, newName: string
     };
     const response = await axios.patch(`/directory/update/${directoryId}/`, { name: newName }, config);
     document.dispatchEvent(treeMenuRefreshEvent);
+    document.dispatchEvent(breadcrumbRefreshEvent)
     return response.data.directory;
   } catch (error) {
     console.error(`Error updating note in directory: ${error}`);

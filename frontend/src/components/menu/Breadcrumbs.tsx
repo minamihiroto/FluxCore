@@ -5,6 +5,7 @@ import {
 } from "../../api/breadcrumbApi";
 import { Link } from "react-router-dom";
 import { getBoxDetail } from "../../api/boxApi";
+import { useBreadcrumbRefresh } from "../../hooks/useBreadcrumbRefresh";
 
 export interface Breadcrumb {
   id: number;
@@ -22,35 +23,36 @@ const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId, boxId }) => {
   const [boxName, setBoxName] = useState<string | undefined>();
   const shouldShowBoxName = boxId || boxId === 0;
 
-  useEffect(() => {
-    async function fetchBoxDetails() {
-      if (!boxId && boxId !== 0) return;
-      try {
-        const boxDetail = await getBoxDetail(boxId);
-        setBoxName(boxDetail.name);
-      } catch (error) {
-        console.error("Error fetching box details:", error);
-      }
+  const fetchBreadcrumbs = async () => {
+    let newBreadcrumbs: Breadcrumb[] = [];
+
+    if (directoryId) {
+      newBreadcrumbs = await getDirectoryBreadcrumbs(directoryId);
+    } else if (documentId) {
+      newBreadcrumbs = await getDocumentBreadcrumbs(documentId);
     }
 
-    fetchBoxDetails();
-  }, [boxId]);
+    setBreadcrumbs(newBreadcrumbs);
+  };
+
+  const fetchBoxDetails = async () => {
+    if (!boxId && boxId !== 0) return;
+    try {
+      const boxDetail = await getBoxDetail(boxId);
+      setBoxName(boxDetail.name);
+    } catch (error) {
+      console.error("Error fetching box details:", error);
+    }
+  };
+
+  useBreadcrumbRefresh(fetchBreadcrumbs);
+  useBreadcrumbRefresh(fetchBoxDetails);
 
   useEffect(() => {
-    async function fetchBreadcrumbs() {
-      let newBreadcrumbs: Breadcrumb[] = [];
-
-      if (directoryId) {
-        newBreadcrumbs = await getDirectoryBreadcrumbs(directoryId);
-      } else if (documentId) {
-        newBreadcrumbs = await getDocumentBreadcrumbs(documentId);
-      }
-
-      setBreadcrumbs(newBreadcrumbs);
-    }
-
     fetchBreadcrumbs();
-  }, [directoryId, documentId]);
+    fetchBoxDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [directoryId, documentId, boxId]);
 
   const renderBreadcrumbContent = (
     breadcrumb: Breadcrumb,
@@ -62,9 +64,7 @@ const Breadcrumbs: React.FC<Props> = ({ directoryId, documentId, boxId }) => {
     } else if (isLast) {
       return <span>{breadcrumb.name}</span>;
     } else {
-      return (
-        <Link to={`/directory/${breadcrumb.id}`}>{breadcrumb.name}</Link>
-      );
+      return <Link to={`/directory/${breadcrumb.id}`}>{breadcrumb.name}</Link>;
     }
   };
 

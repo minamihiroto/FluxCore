@@ -1,5 +1,6 @@
 import axios from '../components/config/axiosConfig';
 import { treeMenuRefreshEvent } from "../hooks/useTreeMenuRefresh";
+import { breadcrumbRefreshEvent } from "../hooks/useBreadcrumbRefresh";
 
 export const createBoxLinkedDocument = async (documentName: string, userId: number, boxId: number) => {
   try {
@@ -92,6 +93,7 @@ export const updateNameInDocument = async (documentId: number, newName: string) 
     };
     const response = await axios.patch(`/document/update/${documentId}/`, { name: newName }, config);
     document.dispatchEvent(treeMenuRefreshEvent);
+    document.dispatchEvent(breadcrumbRefreshEvent);
     return response.data.document;
   } catch (error) {
     console.error(`Error updating note in document: ${error}`);

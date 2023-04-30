@@ -1,5 +1,6 @@
 import axios from '../components/config/axiosConfig';
 import { treeMenuRefreshEvent } from "../hooks/useTreeMenuRefresh";
+import { breadcrumbRefreshEvent } from "../hooks/useBreadcrumbRefresh";
 
 export const createBox = async (boxName: string, boxExplain: string, userId: number) => {
   try {
@@ -48,6 +49,7 @@ export const updateBoxName = async (boxId: number, newName: string) => {
     };
     const response = await axios.patch(`/box/update/${boxId}/`, { name: newName }, config);
     document.dispatchEvent(treeMenuRefreshEvent);
+    document.dispatchEvent(breadcrumbRefreshEvent)
     return response.data.box;
   } catch (error) {
     console.error("Error updating box name:", error);
