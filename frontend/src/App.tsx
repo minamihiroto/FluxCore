@@ -65,6 +65,8 @@ const AuthWrapper: React.FC = () => {
   }, [navigate, location.pathname]);
 
   const isLoggedIn = localStorage.getItem("access");
+  const contentClassName =
+    location.pathname === "/login" ? "loginContent" : "content";
 
   return (
     <div className="container">
@@ -73,7 +75,7 @@ const AuthWrapper: React.FC = () => {
           <TreeMenu />
         </div>
       )}
-      <div className="content">
+      <div className={contentClassName}>
         {isLoggedIn && <HeaderMenu />}
         <Routes>
           <Route path="/login" element={<Login />} />

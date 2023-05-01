@@ -56,6 +56,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   }, []);
 
   const isHomePage = location.pathname === "/";
+  const isMyPage = location.pathname === "/profile";
   let showBreadcrumbs = false;
   if (pathMatch && (directoryId || documentId|| boxId)) {
     showBreadcrumbs = true;
@@ -69,6 +70,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
         </div>
       )}
       {isHomePage && <div>Home</div>}
+      {isMyPage && <div>マイページ</div>}
       {!showBreadcrumbs && !isHomePage && <p></p>}
       <Link to="/profile" className={styles.userInfo}>
         {username}
