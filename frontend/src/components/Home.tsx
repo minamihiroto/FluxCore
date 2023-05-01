@@ -39,16 +39,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginTop: "20px",
-          marginRight: "20px",
-        }}
-      >
-        <button onClick={handleShowModal}>＋ボックス追加</button>
-      </div>
       {showModal && (
         <Modal onClose={handleCloseModal}>
           <form onSubmit={handleSubmit}>
@@ -70,7 +60,19 @@ const Dashboard: React.FC = () => {
           </form>
         </Modal>
       )}
-      <BoxList boxes={boxes} />
+      <div style={{ overflowY: "auto", maxHeight: "calc(100vh - 61px)" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "20px",
+            marginRight: "40px",
+          }}
+        >
+          <button onClick={handleShowModal}>＋ボックス追加</button>
+        </div>
+        <BoxList boxes={boxes} />
+      </div>
     </div>
   );
 };
