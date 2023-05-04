@@ -58,7 +58,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   const isHomePage = location.pathname === "/";
   const isMyPage = location.pathname === "/profile";
   let showBreadcrumbs = false;
-  if (pathMatch && (directoryId || documentId|| boxId)) {
+  if (pathMatch && (directoryId || documentId || boxId)) {
     showBreadcrumbs = true;
   }
 
@@ -66,7 +66,11 @@ const HeaderMenu: React.FC<MenuProps> = () => {
     <div className={styles.headerMenuContainer}>
       {showBreadcrumbs && (
         <div className={styles.breadcrumbsContainer}>
-          <Breadcrumbs directoryId={directoryId} documentId={documentId} boxId={boxId} />
+          <Breadcrumbs
+            directoryId={directoryId}
+            documentId={documentId}
+            boxId={boxId}
+          />
         </div>
       )}
       {isHomePage && <div>Home</div>}

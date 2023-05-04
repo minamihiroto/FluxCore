@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createUser } from '../../api/authApi';
+import { createUser } from "../../api/authApi";
 import { useNavigate, Link } from "react-router-dom";
 
 const Register: React.FC = () => {

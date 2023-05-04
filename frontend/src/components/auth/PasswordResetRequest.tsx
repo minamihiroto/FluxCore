@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { checkLoggedIn, requestPasswordReset } from '../../api/authApi';
+import React, { useState, useEffect } from "react";
+import { checkLoggedIn, requestPasswordReset } from "../../api/authApi";
 
 const PasswordResetRequest: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +20,7 @@ const PasswordResetRequest: React.FC = () => {
       }
     };
     checkUserLoggedIn();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +31,7 @@ const PasswordResetRequest: React.FC = () => {
       setMessage(response.data.message);
       setError(null);
     } catch (err) {
-      setError('Error sending password reset email.');
+      setError("Error sending password reset email.");
       setMessage(null);
     }
   };

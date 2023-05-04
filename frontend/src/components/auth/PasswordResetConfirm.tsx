@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { passwordResetConfirm } from '../../api/authApi';
-
+import { passwordResetConfirm } from "../../api/authApi";
 
 const PasswordResetConfirm: React.FC = () => {
-  const [password, setPassword] = useState<string>('');
+  const [password, setPassword] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -18,11 +17,11 @@ const PasswordResetConfirm: React.FC = () => {
     }
 
     try {
-      const response = await passwordResetConfirm(uidb64,token, password);
+      const response = await passwordResetConfirm(uidb64, token, password);
       setMessage(response.data.message);
-      setTimeout(() => navigate('/login'), 3000);
+      setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
-      setError('エラーが発生しました。');
+      setError("エラーが発生しました。");
     }
   };
 
