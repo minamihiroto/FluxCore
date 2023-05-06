@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { checkLoggedIn, requestPasswordReset } from "../../api/authApi";
+import styles from "./style/PasswordResetRequest.module.css";
+import { Link } from "react-router-dom";
 
 const PasswordResetRequest: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -37,25 +39,35 @@ const PasswordResetRequest: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Password Reset Request</h2>
-      {message && <p className="success">{message}</p>}
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className={styles.container}>
+      <h2 className={styles.title}>パスワードリセット</h2>
+      {message && (
+        <p className={`${styles.message} ${styles.success}`}>{message}</p>
+      )}
+      {error && <p className={styles.message}>{error}</p>}
+      <form onSubmit={handleSubmit} className={styles.form}>
         <div>
-          <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
             name="email"
+            placeholder="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             readOnly={loggedIn}
+            className={styles.input}
           />
         </div>
-        <button type="submit">メールを送信</button>
+        <button type="submit" className={styles.button}>
+          メールを送信
+        </button>
       </form>
+      {!email && (
+        <Link to={"/"} className={styles.link}>
+          ログインへ
+        </Link>
+      )}
     </div>
   );
 };

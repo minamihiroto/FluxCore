@@ -66,7 +66,9 @@ const AuthWrapper: React.FC = () => {
 
   const isLoggedIn = localStorage.getItem("access");
   const contentClassName =
-    location.pathname === "/login" ? "loginContent" : "content";
+    location.pathname === "/login" || location.pathname === "/password-reset"
+      ? "fullWidthContent"
+      : "content";
 
   return (
     <div className="container">
