@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
 import styles from "./style/HeaderMenu.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { checkLoggedIn } from "../../api/authApi";
 
 interface MenuProps {}
@@ -17,6 +17,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
   const [documentId, setDocumentId] = useState<number | undefined>();
   const [boxId, setBoxId] = useState<number | undefined>();
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (pathMatch) {
@@ -45,6 +46,9 @@ const HeaderMenu: React.FC<MenuProps> = () => {
     const getUserInfo = async () => {
       try {
         const response = await checkLoggedIn();
+        if (!response.data) {
+          navigate("/login");
+        }
         setUsername(response.data.username);
         localStorage.setItem("user_id", response.data.id);
       } catch (error) {
@@ -53,6 +57,7 @@ const HeaderMenu: React.FC<MenuProps> = () => {
     };
 
     getUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isHomePage = location.pathname === "/";
