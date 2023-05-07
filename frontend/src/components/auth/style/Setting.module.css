@@ -1,0 +1,37 @@
+.setting{
+  margin: 40px;
+}
+
+.navigation {
+  display: flex;
+}
+
+.menuContainer {
+  margin-right: 30px;
+}
+
+.menuItem {
+  padding: 4px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.menuItem:last-child {
+  margin-bottom: 0;
+}
+
+.menuItem.active {
+  background-color: #f0f0f0;
+}
+
+.indicator {
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #007bff;
+  width: 4px;
+  height: 90%;
+}

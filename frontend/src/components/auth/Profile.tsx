@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Profile: React.FC = () => {
   const handleLogout = () => {
@@ -11,7 +11,7 @@ const Profile: React.FC = () => {
 
   return (
     <div>
-      <Link to={"/register"}>新規ユーザー登録へ</Link>
+      <h1>マイページ</h1>
       <Link to={"/password-reset"}>パスワードリセットする</Link>
       <button onClick={handleLogout}>ログアウト</button>
     </div>

@@ -18,7 +18,7 @@ import DocumentDetail from "./components/document/DocumentDetail";
 import TreeMenu from "./components/menu/TreeMenu";
 import "./App.css";
 import HeaderMenu from "./components/menu/HeaderMenu";
-import Profile from "./components/auth/Profile";
+import Setting from "./components/auth/Setting";
 
 const AuthWrapper: React.FC = () => {
   const navigate = useNavigate();
@@ -91,7 +91,7 @@ const AuthWrapper: React.FC = () => {
             path="/password-reset-confirm/:uidb64/:token"
             element={<PasswordResetConfirm />}
           />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/setting" element={<Setting />} />
         </Routes>
       </div>
     </div>
