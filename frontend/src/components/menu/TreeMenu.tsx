@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../config/axiosConfig";
+import axios from "../../config/axiosConfig";
 import styles from "./style/TreeMenu.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

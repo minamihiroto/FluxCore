@@ -1,4 +1,4 @@
-import axios from '../components/config/axiosConfig';
+import axios from '../config/axiosConfig';
 import { treeMenuRefreshEvent } from "../hooks/useTreeMenuRefresh";
 import { breadcrumbRefreshEvent } from "../hooks/useBreadcrumbRefresh";
 
