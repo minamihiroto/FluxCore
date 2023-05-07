@@ -64,7 +64,7 @@ const PasswordResetRequest: React.FC = () => {
         </button>
       </form>
       {!email && (
-        <Link to={"/"} className={styles.link}>
+        <Link to={"/login"} className={styles.link}>
           ログインへ
         </Link>
       )}

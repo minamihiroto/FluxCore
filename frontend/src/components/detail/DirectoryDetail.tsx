@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from "react";
 import {
-  createBoxLinkedDirectory,
-  getBoxLinkedDirectories,
+  createDirectoryLinkedDirectory,
+  getDirectoryLinkedDirectories,
+  updateNameInDirectory,
 } from "../../api/directoryApi";
 import {
-  createBoxLinkedDocument,
-  getBoxLinkedDocuments,
+  createDirectoryLinkedDocument,
+  getDirectoryLinkedDocuments,
 } from "../../api/documentApi";
 import { useParams } from "react-router-dom";
-import { getBoxDetail, updateBoxName } from "../../api/boxApi";
+import { getDirectoryDetail } from "../../api/directoryApi";
 import DirectoryList from "../list/DirectoryList";
 import DocumentList from "../list/DocumentList";
+import commonStyles from "./style/CommonStyle.module.css";
 
-const BoxDetails: React.FC = () => {
+const DirectoryDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [box, setBox] = useState<any>(null);
+  const [directory, setDirectory] = useState<any>(null);
   const [directoryName, setDirectoryName] = useState("");
   const [documentName, setDocumentName] = useState("");
   const [directories, setDirectories] = useState([]);
   const [documents, setDocuments] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const userId = parseInt(localStorage.getItem("user_id") || "0", 10);
     if (id) {
-      const result = await createBoxLinkedDirectory(
+      const result = await createDirectoryLinkedDirectory(
         directoryName,
         userId,
         parseInt(id, 10)
@@ -39,7 +41,7 @@ const BoxDetails: React.FC = () => {
         alert("Error creating directory");
       }
     } else {
-      console.error("Error: box id is not defined.");
+      console.error("Error: directory id is not defined.");
     }
   };
 
@@ -47,7 +49,7 @@ const BoxDetails: React.FC = () => {
     e.preventDefault();
     const userId = parseInt(localStorage.getItem("user_id") || "0", 10);
     if (id) {
-      const result = await createBoxLinkedDocument(
+      const result = await createDirectoryLinkedDocument(
         documentName,
         userId,
         parseInt(id, 10)
@@ -60,17 +62,58 @@ const BoxDetails: React.FC = () => {
         alert("Error creating document");
       }
     } else {
-      console.error("Error: box id is not defined.");
+      console.error("Error: directory id is not defined.");
     }
   };
 
-  const handleUpdateBoxName = async () => {
+  const loadDirectories = async () => {
     if (id) {
-      const boxId = parseInt(id, 10);
-      const updatedBox = await updateBoxName(boxId, newName);
-      if (updatedBox) {
-        setBox(updatedBox);
-        loadBoxDetails();
+      const directoryId = parseInt(id, 10);
+      const directories = await getDirectoryLinkedDirectories(directoryId);
+      setDirectories(directories);
+    } else {
+      console.error("Error: directory id is not defined.");
+    }
+  };
+
+  const loadDocuments = async () => {
+    if (id) {
+      const directoryId = parseInt(id, 10);
+      const documents = await getDirectoryLinkedDocuments(directoryId);
+      setDocuments(documents);
+    } else {
+      console.error("Error: directory id is not defined.");
+    }
+  };
+
+  const fetchDirectoryDetails = async () => {
+    if (!id) {
+      console.error("Error: directory id is not defined.");
+      return;
+    }
+
+    const directoryId = parseInt(id, 10);
+    const directoryDetails = await getDirectoryDetail(directoryId);
+    setDirectory(directoryDetails);
+  };
+
+  useEffect(() => {
+    fetchDirectoryDetails();
+    loadDirectories();
+    loadDocuments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const handleNameChange = async () => {
+    if (id) {
+      const directoryId = parseInt(id, 10);
+      const updatedDirectory = await updateNameInDirectory(
+        directoryId,
+        newName
+      );
+      if (updatedDirectory) {
+        setDirectory(updatedDirectory);
+        fetchDirectoryDetails();
         setIsEditing(false);
       } else {
         alert("Error updating box name");
@@ -80,49 +123,12 @@ const BoxDetails: React.FC = () => {
     }
   };
 
-  const loadDirectories = async () => {
-    if (id) {
-      const boxId = parseInt(id, 10);
-      const directories = await getBoxLinkedDirectories(boxId);
-      setDirectories(directories);
-    } else {
-      console.error("Error: box id is not defined.");
-    }
-  };
-
-  const loadDocuments = async () => {
-    if (id) {
-      const boxId = parseInt(id, 10);
-      const documents = await getBoxLinkedDocuments(boxId);
-      setDocuments(documents);
-    } else {
-      console.error("Error: box id is not defined.");
-    }
-  };
-
-  const loadBoxDetails = async () => {
-    if (!id) {
-      console.error("Error: box id is not defined.");
-      return;
-    }
-    const boxId = parseInt(id, 10);
-    const boxDetails = await getBoxDetail(boxId);
-    setBox(boxDetails);
-  };
-
-  useEffect(() => {
-    loadBoxDetails();
-    loadDirectories();
-    loadDocuments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  if (!box) {
+  if (!directory) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
+    <div className={commonStyles.container}>
       {isEditing ? (
         <div>
           <input
@@ -130,26 +136,25 @@ const BoxDetails: React.FC = () => {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
-          <button onClick={handleUpdateBoxName}>更新</button>
+          <button onClick={handleNameChange}>更新</button>
           <button onClick={() => setIsEditing(false)}>キャンセル</button>
         </div>
       ) : (
         <p>
-          ボックス名: {box.name}{" "}
+          ディレクトリ名: {directory.name}{" "}
           <button
             onClick={() => {
               setIsEditing(true);
-              setNewName(box.name);
+              setNewName(directory.name);
             }}
           >
             編集
           </button>
         </p>
       )}
-      <p>説明: {box.explain}</p>
-      <p>作成者ID: {box.created_by}</p>
-      <p>作成日時: {box.created_at}</p>
-      <p>更新日時: {box.updated_at}</p>
+      <p>作成者ID: {directory.created_by}</p>
+      <p>作成日時: {directory.created_at}</p>
+      <p>更新日時: {directory.updated_at}</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="directoryName">ディレクトリ作成</label>
         <input
@@ -176,4 +181,4 @@ const BoxDetails: React.FC = () => {
   );
 };
 
-export default BoxDetails;
+export default DirectoryDetails;

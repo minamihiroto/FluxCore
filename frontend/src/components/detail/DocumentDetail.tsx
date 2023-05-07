@@ -5,7 +5,8 @@ import {
   updateNoteInDocument,
   updateNameInDocument,
 } from "../../api/documentApi";
-
+import commonStyles from "./style/CommonStyle.module.css";
+ 
 const DocumentDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [document, setDocument] = useState<any>(null);
@@ -69,7 +70,7 @@ const DocumentDetail: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className={commonStyles.container}>
       {isEditing ? (
         <div>
           <input
