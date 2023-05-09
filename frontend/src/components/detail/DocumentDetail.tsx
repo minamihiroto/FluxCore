@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
   getDocumentDetail,
   updateNoteInDocument,
   updateNameInDocument,
 } from "../../api/documentApi";
-import commonStyles from "./style/CommonStyle.module.css";
- 
+import styles from "./style/DocumentDetail.module.css";
+
 const DocumentDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [document, setDocument] = useState<any>(null);
   const [note, setNote] = useState("");
   const [newName, setNewName] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
+  const noteInputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     fetchDocumentDetails();
@@ -34,6 +34,9 @@ const DocumentDetail: React.FC = () => {
     if (document && document.note) {
       setNote(document.note);
     }
+    if (document && document.name) {
+      setNewName(document.name);
+    }
   }, [document]);
 
   const handleNoteChange = async (
@@ -49,19 +52,15 @@ const DocumentDetail: React.FC = () => {
     }
   };
 
-  const handleNameChange = async () => {
-    if (id) {
+  const handleNameChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(e.target.value);
+    if (id && document) {
       const documentId = parseInt(id, 10);
-      const updatedDocument = await updateNameInDocument(documentId, newName);
-      if (updatedDocument) {
-        setDocument(updatedDocument);
-        fetchDocumentDetails();
-        setIsEditing(false);
-      } else {
-        alert("Error updating box name");
-      }
-    } else {
-      console.error("Error: box id is not defined.");
+      const updatedDocument = await updateNameInDocument(
+        documentId,
+        e.target.value
+      );
+      setDocument(updatedDocument);
     }
   };
 
@@ -70,40 +69,30 @@ const DocumentDetail: React.FC = () => {
   }
 
   return (
-    <div className={commonStyles.container}>
-      {isEditing ? (
-        <div>
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
-          <button onClick={handleNameChange}>更新</button>
-          <button onClick={() => setIsEditing(false)}>キャンセル</button>
+    <div className={styles.container}>
+      <div className={styles.metadata}>
+        <p className={styles.marginWidth8}>作成者ID: {document.created_by}</p>
+        <div className={styles.metadataTime}>
+          <p className={styles.marginWidth8}>作成日時: {document.created_at}</p>
+          <p className={styles.marginWidth8}>更新日時: {document.updated_at}</p>
         </div>
-      ) : (
-        <p>
-          ボックス名: {document.name}{" "}
-          <button
-            onClick={() => {
-              setIsEditing(true);
-              setNewName(document.name);
-            }}
-          >
-            編集
-          </button>
-        </p>
-      )}
-      <p>作成者ID: {document.created_by}</p>
-      <p>作成日時: {document.created_at}</p>
-      <p>更新日時: {document.updated_at}</p>
-      <div>
-        <h3>ノート</h3>
+      </div>
+      <div className={styles.input}>
+        <input
+          type="text"
+          value={newName}
+          onChange={handleNameChange}
+          className={styles.editInput}
+        />
+      </div>
+      <div className={styles.note}>
         <textarea
-          style={{ width: "600px", height: "400px" }}
+          className={styles.noteTextarea}
           id="note-input"
           value={note}
+          placeholder="入力してください"
           onChange={handleNoteChange}
+          ref={noteInputRef}
         />
       </div>
     </div>
