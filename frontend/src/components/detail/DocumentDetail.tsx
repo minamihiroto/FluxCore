@@ -42,11 +42,14 @@ const DocumentDetail: React.FC = () => {
   const handleNoteChange = async (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setNote(e.target.value);
+    const target = e.target;
+    setNote(target.value);
+    target.style.height = 'inherit';
+    target.style.height = `${target.scrollHeight}px`;
     if (document) {
       const updatedDocument = await updateNoteInDocument(
         document.id,
-        e.target.value
+        target.value
       );
       setDocument(updatedDocument);
     }
@@ -71,10 +74,10 @@ const DocumentDetail: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.metadata}>
-        <p className={styles.marginWidth8}>作成者ID: {document.created_by}</p>
+        <p>作成者ID: {document.created_by}</p>
         <div className={styles.metadataTime}>
-          <p className={styles.marginWidth8}>作成日時: {document.created_at}</p>
-          <p className={styles.marginWidth8}>更新日時: {document.updated_at}</p>
+          <p>作成日時: {document.created_at}</p>
+          <p>更新日時: {document.updated_at}</p>
         </div>
       </div>
       <div className={styles.input}>
@@ -82,6 +85,7 @@ const DocumentDetail: React.FC = () => {
           type="text"
           value={newName}
           onChange={handleNameChange}
+          placeholder="タイトルを入力してください"
           className={styles.editInput}
         />
       </div>
@@ -93,6 +97,8 @@ const DocumentDetail: React.FC = () => {
           placeholder="入力してください"
           onChange={handleNoteChange}
           ref={noteInputRef}
+          style={{ overflowY: 'hidden' }}
+          autoFocus
         />
       </div>
     </div>
