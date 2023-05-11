@@ -41,7 +41,6 @@ const DocumentDetail: React.FC = () => {
 
   useEffect(() => {
     if (noteInputRef.current) {
-      noteInputRef.current.style.height = "inherit";
       noteInputRef.current.style.height = `${noteInputRef.current.scrollHeight}px`;
     }
   }, [note]);
@@ -51,7 +50,6 @@ const DocumentDetail: React.FC = () => {
   ) => {
     const target = e.target;
     setNote(target.value);
-    target.style.height = 'inherit';
     target.style.height = `${target.scrollHeight}px`;
     if (document) {
       const updatedDocument = await updateNoteInDocument(
