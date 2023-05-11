@@ -39,6 +39,13 @@ const DocumentDetail: React.FC = () => {
     }
   }, [document]);
 
+  useEffect(() => {
+    if (noteInputRef.current) {
+      noteInputRef.current.style.height = "inherit";
+      noteInputRef.current.style.height = `${noteInputRef.current.scrollHeight}px`;
+    }
+  }, [note]);
+
   const handleNoteChange = async (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -97,7 +104,6 @@ const DocumentDetail: React.FC = () => {
           placeholder="入力してください"
           onChange={handleNoteChange}
           ref={noteInputRef}
-          style={{ overflowY: 'hidden' }}
           autoFocus
         />
       </div>
