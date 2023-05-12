@@ -14,7 +14,7 @@ import PasswordResetConfirm from "./components/auth/PasswordResetConfirm";
 import BoxDetail from "./components/detail/BoxDetail";
 import axios from "axios";
 import DirectoryDetail from "./components/detail/DirectoryDetail";
-import DocumentDetail from "./components/detail/DocumentDetail";
+import DocumentDetail from "./components/detail/documentDetail/DocumentDetail";
 import TreeMenu from "./components/menu/TreeMenu";
 import "./App.css";
 import HeaderMenu from "./components/menu/HeaderMenu";

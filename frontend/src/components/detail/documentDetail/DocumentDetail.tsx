@@ -1,43 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import styles from "../style/DocumentDetail.module.css";
+import { useDocument } from "./function/useDocument";
+import { useNote } from "./function/useNote";
+import { useNewName } from "./function/useNewName";
 import {
-  getDocumentDetail,
   updateNoteInDocument,
   updateNameInDocument,
-} from "../../api/documentApi";
-import styles from "./style/DocumentDetail.module.css";
+} from "../../../api/documentApi";
 
 const DocumentDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [document, setDocument] = useState<any>(null);
-  const [note, setNote] = useState("");
-  const [newName, setNewName] = useState("");
+  const { id, document, setDocument } = useDocument();
+  const { note, setNote } = useNote(document);
+  const { newName, setNewName } = useNewName(document);
   const noteInputRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    fetchDocumentDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  const fetchDocumentDetails = async () => {
-    if (!id) {
-      console.error("Error: document id is not defined.");
-      return;
-    }
-
-    const documentId = parseInt(id, 10);
-    const documentDetails = await getDocumentDetail(documentId);
-    setDocument(documentDetails);
-  };
-
-  useEffect(() => {
-    if (document && document.note) {
-      setNote(document.note);
-    }
-    if (document && document.name) {
-      setNewName(document.name);
-    }
-  }, [document]);
 
   useEffect(() => {
     if (noteInputRef.current) {
@@ -52,11 +27,11 @@ const DocumentDetail: React.FC = () => {
     setNote(target.value);
     target.style.height = `${target.scrollHeight}px`;
     if (document) {
-      const updatedDocument = await updateNoteInDocument(
+      const updatedNoteDocument = await updateNoteInDocument(
         document.id,
         target.value
       );
-      setDocument(updatedDocument);
+      setDocument(updatedNoteDocument);
     }
   };
 
@@ -64,11 +39,11 @@ const DocumentDetail: React.FC = () => {
     setNewName(e.target.value);
     if (id && document) {
       const documentId = parseInt(id, 10);
-      const updatedDocument = await updateNameInDocument(
+      const updatedNameDocument = await updateNameInDocument(
         documentId,
         e.target.value
       );
-      setDocument(updatedDocument);
+      setDocument(updatedNameDocument);
     }
   };
 
