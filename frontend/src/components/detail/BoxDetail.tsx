@@ -9,9 +9,8 @@ import {
 } from "../../api/documentApi";
 import { useParams } from "react-router-dom";
 import { getBoxDetail, updateBoxName } from "../../api/boxApi";
-import DirectoryList from "../list/DirectoryList";
-import DocumentList from "../list/DocumentList";
 import commonStyles from "./style/CommonStyle.module.css";
+import CombinedList from "../list/CombinedList";
 
 const BoxDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -171,8 +170,7 @@ const BoxDetails: React.FC = () => {
         />
         <button type="submit">作成</button>
       </form>
-      <DirectoryList directories={directories} />
-      <DocumentList documents={documents} />
+      <CombinedList directories={directories} documents={documents} />
     </div>
   );
 };
