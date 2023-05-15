@@ -11,7 +11,7 @@ import Login from "./components/auth/Login";
 import Home from "./components/Home";
 import PasswordResetRequest from "./components/auth/PasswordResetRequest";
 import PasswordResetConfirm from "./components/auth/PasswordResetConfirm";
-import BoxDetail from "./components/detail/BoxDetail";
+import BoxDetail from "./components/detail/boxDetail/BoxDetail";
 import axios from "axios";
 import DirectoryDetail from "./components/detail/DirectoryDetail";
 import DocumentDetail from "./components/detail/documentDetail/DocumentDetail";
