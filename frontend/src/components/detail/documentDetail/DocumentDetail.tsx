@@ -61,13 +61,13 @@ const DocumentDetail: React.FC = () => {
           <p>更新日時: {document.updated_at}</p>
         </div>
       </div>
-      <div className={styles.input}>
+      <div className={commonStyles.input}>
         <input
           type="text"
           value={newName}
           onChange={handleNameChange}
           placeholder="タイトルを入力してください"
-          className={styles.editInput}
+          className={commonStyles.editInput}
         />
       </div>
       <div className={styles.note}>

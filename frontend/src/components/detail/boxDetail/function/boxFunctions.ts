@@ -1,17 +1,15 @@
 import { getBoxDetail, updateBoxName } from "../../../../api/boxApi";
 
 export const handleUpdateBoxName = async (
-  id: string,
+  id: string | undefined,
   newName: string,
   loadBoxDetails: () => Promise<void>,
-  setIsEditing: (value: boolean) => void
 ) => {
   if (id) {
     const boxId = parseInt(id, 10);
     const updatedBox = await updateBoxName(boxId, newName);
     if (updatedBox) {
       loadBoxDetails();
-      setIsEditing(false);
     } else {
       alert("Error updating box name");
     }

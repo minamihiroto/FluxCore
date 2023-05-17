@@ -13,7 +13,6 @@ const BoxDetails: React.FC = () => {
   const [documentName, setDocumentName] = useState("");
   const [directories, setDirectories] = useState([]);
   const [documents, setDocuments] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState("");
 
   useEffect(() => {
@@ -22,6 +21,13 @@ const BoxDetails: React.FC = () => {
     loadDocumentsWrapper();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    if (box && newName !== box.name) {
+      handleUpdateBoxName(id, newName, loadBoxDetailsWrapper);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newName]);
 
   if (!id) {
     return <div>Box ID is not defined</div>;
@@ -39,10 +45,6 @@ const BoxDetails: React.FC = () => {
     setDocumentName("");
   };
 
-  const handleBoxNameUpdate = async () => {
-    await handleUpdateBoxName(id, newName, loadBoxDetailsWrapper, setIsEditing);
-  };
-
   const loadDirectoriesWrapper = async () => {
     const directories = await loadDirectories(id);
     setDirectories(directories);
@@ -56,6 +58,7 @@ const BoxDetails: React.FC = () => {
   const loadBoxDetailsWrapper = async () => {
     const boxDetails = await loadBoxDetails(id);
     setBox(boxDetails);
+    setNewName(boxDetails.name);
   };
 
   if (!box) {
@@ -64,30 +67,16 @@ const BoxDetails: React.FC = () => {
 
   return (
     <div className={commonStyles.container}>
-      {isEditing ? (
-        <div>
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
-          <button onClick={handleBoxNameUpdate}>更新</button>
-          <button onClick={() => setIsEditing(false)}>キャンセル</button>
-        </div>
-      ) : (
-        <p>
-          ボックス名: {box.name}{" "}
-          <button
-            onClick={() => {
-              setIsEditing(true);
-              setNewName(box.name);
-            }}
-          >
-            編集
-          </button>
-        </p>
-      )}
-      <p>説明: {box.explain}</p>
+      <div className={commonStyles.input}>
+        <input
+          type="text"
+          id="boxName"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          className={commonStyles.editInput}
+        />
+      </div>
+      <p>{box.explain}</p>
       <div className={commonStyles.metadata}>
         <p>作成者ID: {box.created_by}</p>
         <div className={commonStyles.metadataTime}>
