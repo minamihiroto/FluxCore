@@ -151,9 +151,13 @@ const DirectoryDetails: React.FC = () => {
           </button>
         </p>
       )}
-      <p>作成者ID: {directory.created_by}</p>
-      <p>作成日時: {directory.created_at}</p>
-      <p>更新日時: {directory.updated_at}</p>
+      <div className={commonStyles.metadata}>
+        <p>作成者ID: {directory.created_by}</p>
+        <div className={commonStyles.metadataTime}>
+          <p>作成日時: {directory.created_at}</p>
+          <p>更新日時: {directory.updated_at}</p>
+        </div>
+      </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="directoryName">ディレクトリ作成</label>
         <input

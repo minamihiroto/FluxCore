@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styles from "../style/DocumentDetail.module.css";
+import commonStyles from "../style/CommonStyle.module.css";
 import { useDocument } from "./function/useDocument";
 import { useNote } from "./function/useNote";
 import { useNewName } from "./function/useNewName";
@@ -53,9 +54,9 @@ const DocumentDetail: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.metadata}>
+      <div className={commonStyles.metadata}>
         <p>作成者ID: {document.created_by}</p>
-        <div className={styles.metadataTime}>
+        <div className={commonStyles.metadataTime}>
           <p>作成日時: {document.created_at}</p>
           <p>更新日時: {document.updated_at}</p>
         </div>

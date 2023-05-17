@@ -22,7 +22,7 @@ const BoxDetails: React.FC = () => {
     loadDocumentsWrapper();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-  
+
   if (!id) {
     return <div>Box ID is not defined</div>;
   }
@@ -88,9 +88,13 @@ const BoxDetails: React.FC = () => {
         </p>
       )}
       <p>説明: {box.explain}</p>
-      <p>作成者ID: {box.created_by}</p>
-      <p>作成日時: {box.created_at}</p>
-      <p>更新日時: {box.updated_at}</p>
+      <div className={commonStyles.metadata}>
+        <p>作成者ID: {box.created_by}</p>
+        <div className={commonStyles.metadataTime}>
+          <p>作成日時: {box.created_at}</p>
+          <p>更新日時: {box.updated_at}</p>
+        </div>
+      </div>
       <form onSubmit={handleDirectorySubmit}>
         <label htmlFor="directoryName">ディレクトリ作成</label>
         <input
