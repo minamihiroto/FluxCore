@@ -14,6 +14,7 @@ const BoxDetails: React.FC = () => {
   const [directories, setDirectories] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [newName, setNewName] = useState("");
+  const [showExplain, setShowExplain] = useState(false);
 
   useEffect(() => {
     loadBoxDetailsWrapper();
@@ -61,12 +62,23 @@ const BoxDetails: React.FC = () => {
     setNewName(boxDetails.name);
   };
 
+  const handleShowExplain = () => {
+    setShowExplain(!showExplain);
+  };
+
   if (!box) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className={commonStyles.container}>
+      <div className={commonStyles.metadata}>
+        <p>作成者ID: {box.created_by}</p>
+        <div className={commonStyles.metadataTime}>
+          <p>作成日時: {box.created_at}</p>
+          <p>更新日時: {box.updated_at}</p>
+        </div>
+      </div>
       <div className={commonStyles.input}>
         <input
           type="text"
@@ -76,13 +88,14 @@ const BoxDetails: React.FC = () => {
           className={commonStyles.editInput}
         />
       </div>
-      <p>{box.explain}</p>
-      <div className={commonStyles.metadata}>
-        <p>作成者ID: {box.created_by}</p>
-        <div className={commonStyles.metadataTime}>
-          <p>作成日時: {box.created_at}</p>
-          <p>更新日時: {box.updated_at}</p>
-        </div>
+      <div className={commonStyles.explainContainer}>
+        <p
+          className={commonStyles.explainAccordion}
+          onClick={handleShowExplain}
+        >
+          詳細を見る
+        </p>
+        {showExplain && <p>{box.explain}</p>}
       </div>
       <form onSubmit={handleDirectorySubmit}>
         <label htmlFor="directoryName">ディレクトリ作成</label>

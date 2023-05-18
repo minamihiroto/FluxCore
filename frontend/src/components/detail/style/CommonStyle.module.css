@@ -22,7 +22,7 @@
 }
 
 .input{
-  width: 86%;
+  width: 88%;
 }
 
 .editInput {
@@ -35,4 +35,18 @@
   width: 100%;
   background-color: transparent;
   font-weight: 600;
+}
+
+.explainContainer{
+  align-items: start;
+  width: 86%;
+}
+
+.explainAccordion {
+  cursor: pointer;
+  color: #555;
+  font-size: 12px;
+  justify-content: start;
+  display: inline-block;
+  margin: 0;
 }

@@ -53,7 +53,7 @@ const DocumentDetail: React.FC = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={commonStyles.container}>
       <div className={commonStyles.metadata}>
         <p>作成者ID: {document.created_by}</p>
         <div className={commonStyles.metadataTime}>
