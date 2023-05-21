@@ -44,3 +44,8 @@
   font-size: 1.25rem;
   color: #adadad;
 }
+
+.pointer{
+  cursor: pointer;
+  width: 4%;
+}

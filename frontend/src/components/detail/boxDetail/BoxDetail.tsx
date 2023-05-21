@@ -2,22 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import commonStyles from "../style/CommonStyle.module.css";
 import CombinedList from "../../list/CombinedList";
-import { handleSubmit, loadDirectories } from "./function/directoryFunctions";
-import { documentSubmit, loadDocuments } from "./function/documentFunctions";
 import { handleUpdateBoxName, loadBoxDetails } from "./function/boxFunctions";
-import Modal from "../../modal/Modal";
+import { loadDirectories } from "./function/directoryFunctions";
+import { loadDocuments } from "./function/documentFunctions";
 
 const BoxDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [box, setBox] = useState<any>(null);
-  const [directoryName, setDirectoryName] = useState("");
-  const [documentName, setDocumentName] = useState("");
   const [directories, setDirectories] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [newName, setNewName] = useState("");
   const [showExplain, setShowExplain] = useState(false);
-  const [showDirectoryModal, setShowDirectoryModal] = useState(false);
-  const [showDocumentModal, setShowDocumentModal] = useState(false);
 
   useEffect(() => {
     loadBoxDetailsWrapper();
@@ -36,20 +31,6 @@ const BoxDetails: React.FC = () => {
   if (!id) {
     return <div>Box ID is not defined</div>;
   }
-
-  const handleDirectorySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await handleSubmit(id, directoryName, loadDirectoriesWrapper);
-    setDirectoryName("");
-    setShowDirectoryModal(false);
-  };
-
-  const handleDocumentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await documentSubmit(id, documentName, loadDocumentsWrapper);
-    setDocumentName("");
-    setShowDocumentModal(false);
-  };
 
   const loadDirectoriesWrapper = async () => {
     const directories = await loadDirectories(id);
@@ -102,42 +83,13 @@ const BoxDetails: React.FC = () => {
         </p>
         {showExplain && <p>{box.explain}</p>}
       </div>
-      <button onClick={() => setShowDirectoryModal(true)}>
-        ディレクトリ追加
-      </button>
-      <button onClick={() => setShowDocumentModal(true)}>
-        ドキュメント追加
-      </button>
-      {showDirectoryModal && (
-        <Modal onClose={() => setShowDirectoryModal(false)}>
-          <form onSubmit={handleDirectorySubmit}>
-            <label htmlFor="directoryName">ディレクトリ作成</label>
-            <input
-              type="text"
-              id="directoryName"
-              value={directoryName}
-              onChange={(e) => setDirectoryName(e.target.value)}
-            />
-            <button type="submit">作成</button>
-          </form>
-        </Modal>
-      )}
-      {showDocumentModal && (
-        <Modal onClose={() => setShowDocumentModal(false)}>
-          <form onSubmit={handleDocumentSubmit}>
-            <label htmlFor="documentName">ドキュメント作成</label>
-            <input
-              type="text"
-              id="documentName"
-              value={documentName}
-              onChange={(e) => setDocumentName(e.target.value)}
-            />
-            <button type="submit">作成</button>
-          </form>
-        </Modal>
-      )}
-
-      <CombinedList directories={directories} documents={documents} />
+      <CombinedList
+        directories={directories}
+        documents={documents}
+        id={id}
+        loadDirectoriesWrapper={loadDirectoriesWrapper}
+        loadDocumentsWrapper={loadDocumentsWrapper}
+      />
     </div>
   );
 };
