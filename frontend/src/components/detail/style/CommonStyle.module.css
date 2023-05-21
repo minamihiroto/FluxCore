@@ -17,27 +17,35 @@
   justify-content: space-between;
 }
 
-.metadataTime{
+.metadataTime {
   display: flex;
 }
 
-.input{
-  width: 88%;
+.inputContainer {
+  width: 86%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 8px;
+}
+
+.icon {
+  font-size: 26px;
+  vertical-align: middle;
 }
 
 .editInput {
-  margin-bottom: 8px;
+  vertical-align: middle;
+  width: calc(100%-26px);
   padding: 4px 8px;
   border: none;
   border-radius: 4px;
   font-size: 40px;
   outline: none;
-  width: 100%;
   background-color: transparent;
   font-weight: 600;
 }
 
-.explainContainer{
+.explainContainer {
   align-items: start;
   width: 86%;
 }

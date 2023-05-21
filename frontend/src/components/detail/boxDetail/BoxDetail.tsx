@@ -65,7 +65,7 @@ const BoxDetails: React.FC = () => {
           <p>更新日時: {box.updated_at}</p>
         </div>
       </div>
-      <div className={commonStyles.input}>
+      <div className={commonStyles.inputContainer}>
         <input
           type="text"
           id="boxName"

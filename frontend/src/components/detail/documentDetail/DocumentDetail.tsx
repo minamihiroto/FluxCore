@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import styles from "../style/DocumentDetail.module.css";
 import commonStyles from "../style/CommonStyle.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { useDocument } from "./function/useDocument";
 import { useNote } from "./function/useNote";
 import { useNewName } from "./function/useNewName";
@@ -61,7 +63,8 @@ const DocumentDetail: React.FC = () => {
           <p>更新日時: {document.updated_at}</p>
         </div>
       </div>
-      <div className={commonStyles.input}>
+      <div className={commonStyles.inputContainer}>
+      <FontAwesomeIcon icon={faFile} className={commonStyles.icon} />
         <input
           type="text"
           value={newName}
