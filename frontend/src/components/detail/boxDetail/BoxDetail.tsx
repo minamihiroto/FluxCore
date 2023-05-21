@@ -5,6 +5,7 @@ import CombinedList from "../../list/CombinedList";
 import { handleSubmit, loadDirectories } from "./function/directoryFunctions";
 import { documentSubmit, loadDocuments } from "./function/documentFunctions";
 import { handleUpdateBoxName, loadBoxDetails } from "./function/boxFunctions";
+import Modal from "../../modal/Modal";
 
 const BoxDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,8 @@ const BoxDetails: React.FC = () => {
   const [documents, setDocuments] = useState([]);
   const [newName, setNewName] = useState("");
   const [showExplain, setShowExplain] = useState(false);
+  const [showDirectoryModal, setShowDirectoryModal] = useState(false);
+  const [showDocumentModal, setShowDocumentModal] = useState(false);
 
   useEffect(() => {
     loadBoxDetailsWrapper();
@@ -38,12 +41,14 @@ const BoxDetails: React.FC = () => {
     e.preventDefault();
     await handleSubmit(id, directoryName, loadDirectoriesWrapper);
     setDirectoryName("");
+    setShowDirectoryModal(false);
   };
 
   const handleDocumentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await documentSubmit(id, documentName, loadDocumentsWrapper);
     setDocumentName("");
+    setShowDocumentModal(false);
   };
 
   const loadDirectoriesWrapper = async () => {
@@ -97,26 +102,41 @@ const BoxDetails: React.FC = () => {
         </p>
         {showExplain && <p>{box.explain}</p>}
       </div>
-      <form onSubmit={handleDirectorySubmit}>
-        <label htmlFor="directoryName">ディレクトリ作成</label>
-        <input
-          type="text"
-          id="directoryName"
-          value={directoryName}
-          onChange={(e) => setDirectoryName(e.target.value)}
-        />
-        <button type="submit">作成</button>
-      </form>
-      <form onSubmit={handleDocumentSubmit}>
-        <label htmlFor="documentName">ドキュメント作成</label>
-        <input
-          type="text"
-          id="documentName"
-          value={documentName}
-          onChange={(e) => setDocumentName(e.target.value)}
-        />
-        <button type="submit">作成</button>
-      </form>
+      <button onClick={() => setShowDirectoryModal(true)}>
+        ディレクトリ追加
+      </button>
+      <button onClick={() => setShowDocumentModal(true)}>
+        ドキュメント追加
+      </button>
+      {showDirectoryModal && (
+        <Modal onClose={() => setShowDirectoryModal(false)}>
+          <form onSubmit={handleDirectorySubmit}>
+            <label htmlFor="directoryName">ディレクトリ作成</label>
+            <input
+              type="text"
+              id="directoryName"
+              value={directoryName}
+              onChange={(e) => setDirectoryName(e.target.value)}
+            />
+            <button type="submit">作成</button>
+          </form>
+        </Modal>
+      )}
+      {showDocumentModal && (
+        <Modal onClose={() => setShowDocumentModal(false)}>
+          <form onSubmit={handleDocumentSubmit}>
+            <label htmlFor="documentName">ドキュメント作成</label>
+            <input
+              type="text"
+              id="documentName"
+              value={documentName}
+              onChange={(e) => setDocumentName(e.target.value)}
+            />
+            <button type="submit">作成</button>
+          </form>
+        </Modal>
+      )}
+
       <CombinedList directories={directories} documents={documents} />
     </div>
   );

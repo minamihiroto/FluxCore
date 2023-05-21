@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createBox, getBoxes } from "../api/boxApi";
 import BoxList from "./list/BoxList";
+import Modal from './modal/Modal';
 
 const Dashboard: React.FC = () => {
   const [boxName, setBoxName] = useState("");
@@ -29,18 +30,10 @@ const Dashboard: React.FC = () => {
     loadBoxes();
   }, []);
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   return (
     <div>
       {showModal && (
-        <Modal onClose={handleCloseModal}>
+        <Modal onClose={() => setShowModal(false)}>
           <form onSubmit={handleSubmit}>
             <label htmlFor="boxName">ボックス名</label>
             <input
@@ -49,9 +42,8 @@ const Dashboard: React.FC = () => {
               value={boxName}
               onChange={(e) => setBoxName(e.target.value)}
             />
-            <label htmlFor="boxName">説明</label>
+            <label htmlFor="boxExplain">説明</label>
             <textarea
-              style={{ width: "300px", height: "100px" }}
               id="boxExplain"
               value={boxExplain}
               onChange={(e) => setBoxExplain(e.target.value)}
@@ -69,44 +61,9 @@ const Dashboard: React.FC = () => {
             marginRight: "40px",
           }}
         >
-          <button onClick={handleShowModal}>＋ボックス追加</button>
+          <button onClick={() => setShowModal(true)}>＋ボックス追加</button>
         </div>
         <BoxList boxes={boxes} />
-      </div>
-    </div>
-  );
-};
-
-const Modal: React.FC<{ children: React.ReactNode; onClose: () => void }> = ({
-  children,
-  onClose,
-}) => {
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 1000,
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "white",
-          padding: "1rem",
-          borderRadius: "5px",
-        }}
-      >
-        {children}
-        <button onClick={onClose} style={{ marginTop: "1rem" }}>
-          キャンセル
-        </button>
       </div>
     </div>
   );
