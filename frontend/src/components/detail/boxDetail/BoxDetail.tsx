@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import commonStyles from "../style/CommonStyle.module.css";
 import CombinedList from "../../list/CombinedList";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBox } from "@fortawesome/free-solid-svg-icons";
 import { handleUpdateBoxName, loadBoxDetails } from "./function/boxFunctions";
 import { loadDirectories } from "./function/directoryFunctions";
 import { loadDocuments } from "./function/documentFunctions";
@@ -66,6 +68,7 @@ const BoxDetails: React.FC = () => {
         </div>
       </div>
       <div className={commonStyles.inputContainer}>
+      <FontAwesomeIcon icon={faBox} className={commonStyles.icon} />
         <input
           type="text"
           id="boxName"
