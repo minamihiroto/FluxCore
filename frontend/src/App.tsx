@@ -13,7 +13,7 @@ import PasswordResetRequest from "./components/auth/PasswordResetRequest";
 import PasswordResetConfirm from "./components/auth/PasswordResetConfirm";
 import BoxDetail from "./components/detail/boxDetail/BoxDetail";
 import axios from "axios";
-import DirectoryDetail from "./components/detail/DirectoryDetail";
+import DirectoryDetail from "./components/detail/directoryDetail/DirectoryDetail";
 import DocumentDetail from "./components/detail/documentDetail/DocumentDetail";
 import TreeMenu from "./components/menu/TreeMenu";
 import "./App.css";

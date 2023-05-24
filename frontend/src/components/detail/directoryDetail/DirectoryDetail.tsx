@@ -3,15 +3,15 @@ import {
   createDirectoryLinkedDirectory,
   getDirectoryLinkedDirectories,
   updateNameInDirectory,
-} from "../../api/directoryApi";
+} from "../../../api/directoryApi";
 import {
   createDirectoryLinkedDocument,
   getDirectoryLinkedDocuments,
-} from "../../api/documentApi";
+} from "../../../api/documentApi";
 import { useParams } from "react-router-dom";
-import { getDirectoryDetail } from "../../api/directoryApi";
+import { getDirectoryDetail } from "../../../api/directoryApi";
 import commonStyles from "./style/CommonStyle.module.css";
-import CombinedList from "../list/CombinedList";
+import CombinedList from "../../list/CombinedList";
 
 const DirectoryDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
