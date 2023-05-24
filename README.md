@@ -1,3 +1,3 @@
 FluxCore
 
-OSSのFSAサービスを開発中
+OSSのSFAサービスを開発中
