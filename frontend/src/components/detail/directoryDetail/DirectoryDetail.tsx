@@ -10,7 +10,7 @@ import {
 } from "../../../api/documentApi";
 import { useParams } from "react-router-dom";
 import { getDirectoryDetail } from "../../../api/directoryApi";
-import commonStyles from "./style/CommonStyle.module.css";
+import commonStyles from "../style/CommonStyle.module.css";
 import CombinedList from "../../list/CombinedList";
 
 const DirectoryDetails: React.FC = () => {

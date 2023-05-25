@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { createBox, getBoxes } from "../api/boxApi";
-import BoxList from "./list/BoxList";
-import Modal from './modal/Modal';
+import { createBox, getBoxes } from "../../api/boxApi";
+import BoxList from "../list/BoxList";
+import Modal from "../modal/Modal";
+import styles from "./style/Home.module.css";
 
 const Dashboard: React.FC = () => {
   const [boxName, setBoxName] = useState("");
@@ -52,15 +53,8 @@ const Dashboard: React.FC = () => {
           </form>
         </Modal>
       )}
-      <div style={{ overflowY: "auto", maxHeight: "calc(100vh - 61px)" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "20px",
-            marginRight: "40px",
-          }}
-        >
+      <div className={styles.boxList}>
+        <div className={styles.addButton}>
           <button onClick={() => setShowModal(true)}>＋ボックス追加</button>
         </div>
         <BoxList boxes={boxes} />

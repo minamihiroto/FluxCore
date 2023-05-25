@@ -1,0 +1,11 @@
+.boxList {
+  overflow-y: auto;
+  max-height: calc(100vh - 61px);
+}
+
+.addButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-right: 40px;
+}
