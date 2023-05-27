@@ -29,7 +29,7 @@ const BoxList: React.FC<BoxListProps> = ({ boxes }) => {
           className={styles.box}
         >
           <li className={styles.boxItem}>
-            <div className={styles.boxItemLink}>{box.name}</div>
+            <p className={styles.boxItemLink}>{box.name}</p>
             <p className={styles.boxCreator}>作成者:{box.created_by}</p>
           </li>
         </Link>

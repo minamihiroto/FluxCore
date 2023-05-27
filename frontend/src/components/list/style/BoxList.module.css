@@ -27,6 +27,11 @@
   text-decoration: none;
   color: #333;
   font-weight: bold;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .boxCreator {
@@ -35,6 +40,6 @@
   margin-top: 5px;
 }
 
-.box{
+.box {
   margin: 20px;
 }
