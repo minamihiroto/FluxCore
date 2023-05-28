@@ -24,6 +24,10 @@ export const checkLoggedIn = async () => {
   return await axiosInstance.get('auth/user/');
 };
 
+export const getUserInfo = async (id: number) => {
+  return await axiosInstance.get(`auth/user/${id}/`);
+};
+
 export const requestPasswordReset = async (email: string) => {
   return await axiosInstance.post(`auth/password-reset/`, { email });
 };

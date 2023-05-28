@@ -17,6 +17,7 @@ import base64
 
 User = get_user_model()
 
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
@@ -28,9 +29,10 @@ def register(request):
     if User.objects.filter(email=email).exists():
         return Response({'error': 'A user with this email already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = User.objects.create_user(username=username, password=password, email=email, is_active=False)
+    user = User.objects.create_user(
+        username=username, password=password, email=email, is_active=False)
     token = default_token_generator.make_token(user)
-    
+
     send_activation_email(user, token)
 
     refresh = RefreshToken.for_user(user)
@@ -41,6 +43,7 @@ def register(request):
 
     return Response(res_data, status=status.HTTP_201_CREATED)
 
+
 def send_activation_email(user, token):
     activation_url = f"{settings.FRONTEND_URL}/login/?user_id_b64={urlsafe_base64_encode(force_bytes(user.pk))}&token={token}"
     subject = 'Activate your account'
@@ -49,6 +52,7 @@ def send_activation_email(user, token):
     recipient_list = [user.email]
 
     send_mail(subject, message, from_email, recipient_list)
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -66,17 +70,18 @@ def activate(request, user_id_b64, token):
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         return Response({'error': 'Invalid user ID'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
     username = request.data.get('username')
     password = request.data.get('password')
-    
+
     if not username or not password:
         return Response({'error': 'Username and password are required'}, status=400)
-    
+
     user = authenticate(request, username=username, password=password)
-    
+
     if user is not None:
         refresh = RefreshToken.for_user(user)
         res_data = {
@@ -86,7 +91,8 @@ def login(request):
         return Response(res_data)
     else:
         return Response({'error': 'Invalid credentials'}, status=401)
-    
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user(request):
@@ -98,6 +104,7 @@ def user(request):
     }
     return Response(data)
 
+
 class PasswordResetRequestView(generics.GenericAPIView):
     def post(self, request):
         email = request.data.get('email')
@@ -105,7 +112,8 @@ class PasswordResetRequestView(generics.GenericAPIView):
             try:
                 user = User.objects.get(email=email)
                 token = default_token_generator.make_token(user)
-                uidb64 = urlsafe_base64_encode(base64.b64encode(str(user.pk).encode()))
+                uidb64 = urlsafe_base64_encode(
+                    base64.b64encode(str(user.pk).encode()))
 
                 reset_url = f"{settings.FRONTEND_URL}/password-reset-confirm/{uidb64}/{token}/"
 
@@ -122,6 +130,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
                 return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class PasswordResetConfirmView(generics.GenericAPIView):
     def post(self, request, uidb64, token):
@@ -141,3 +150,17 @@ class PasswordResetConfirmView(generics.GenericAPIView):
                 return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "Password is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def userInfo(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        data = {
+            'username': user.username,
+            'email': user.email,
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
