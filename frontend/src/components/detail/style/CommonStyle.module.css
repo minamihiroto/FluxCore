@@ -35,7 +35,7 @@
 
 .editInput {
   vertical-align: middle;
-  width: calc(100%-26px);
+  width: calc(100% - 26px);
   padding: 4px 8px;
   border: none;
   border-radius: 4px;
